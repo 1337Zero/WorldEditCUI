@@ -1,9 +1,10 @@
 package com.mumfrey.worldeditcui.render.shapes;
 
-import static com.mumfrey.liteloader.gl.GL.*;
 
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 
 import com.mumfrey.worldeditcui.render.RenderStyle;
 import com.mumfrey.worldeditcui.render.LineStyle;
@@ -38,9 +39,10 @@ public class RenderEllipsoid extends RenderRegion
 	@Override
 	public void render(Vector3 cameraPos)
 	{
-		glPushMatrix();
-		glTranslated(this.centreX - cameraPos.getX(), this.centreY - cameraPos.getY(), this.centreZ - cameraPos.getZ());
-		
+		//glPushMatrix();
+		GlStateManager.pushMatrix();
+		//glTranslated(this.centreX - cameraPos.getX(), this.centreY - cameraPos.getY(), this.centreZ - cameraPos.getZ());
+		GlStateManager.translated(this.centreX - cameraPos.getX(), this.centreY - cameraPos.getY(), this.centreZ - cameraPos.getZ());
 		for (LineStyle line : this.style.getLines())
 		{
 			if (line.prepare(this.style.getRenderType()))
@@ -51,7 +53,8 @@ public class RenderEllipsoid extends RenderRegion
 			}
 		}
 		
-		glPopMatrix();
+		//glPopMatrix();
+		GlStateManager.popMatrix();
 	}
 	
 	protected void drawXZPlane(LineStyle line)
@@ -62,7 +65,7 @@ public class RenderEllipsoid extends RenderRegion
 		int yRad = (int)Math.floor(this.radii.getY());
 		for (int yBlock = -yRad; yBlock < yRad; yBlock++)
 		{
-			buf.begin(GL_LINE_LOOP, VF_POSITION);
+			buf.begin(0x2, DefaultVertexFormats.POSITION);
 			line.applyColour();
 			
 			for (int i = 0; i <= 40; i++)
@@ -76,7 +79,7 @@ public class RenderEllipsoid extends RenderRegion
 			tessellator.draw();
 		}
 		
-		buf.begin(GL_LINE_LOOP, VF_POSITION);
+		buf.begin(0x2, DefaultVertexFormats.POSITION);
 		line.applyColour();
 		
 		for (int i = 0; i <= 40; i++)
@@ -98,7 +101,7 @@ public class RenderEllipsoid extends RenderRegion
 		int xRad = (int)Math.floor(this.radii.getX());
 		for (int xBlock = -xRad; xBlock < xRad; xBlock++)
 		{
-			buf.begin(GL_LINE_LOOP, VF_POSITION);
+			buf.begin(0x2, DefaultVertexFormats.POSITION);
 			line.applyColour();
 			
 			for (int i = 0; i <= 40; i++)
@@ -112,7 +115,7 @@ public class RenderEllipsoid extends RenderRegion
 			tessellator.draw();
 		}
 		
-		buf.begin(GL_LINE_LOOP, VF_POSITION);
+		buf.begin(0x2, DefaultVertexFormats.POSITION);
 		line.applyColour();
 		
 		for (int i = 0; i <= 40; i++)
@@ -134,7 +137,7 @@ public class RenderEllipsoid extends RenderRegion
 		int zRad = (int)Math.floor(this.radii.getZ());
 		for (int zBlock = -zRad; zBlock < zRad; zBlock++)
 		{
-			buf.begin(GL_LINE_LOOP, VF_POSITION);
+			buf.begin(0x2, DefaultVertexFormats.POSITION);
 			line.applyColour();
 			
 			for (int i = 0; i <= 40; i++)
@@ -148,7 +151,7 @@ public class RenderEllipsoid extends RenderRegion
 			tessellator.draw();
 		}
 		
-		buf.begin(GL_LINE_LOOP, VF_POSITION);
+		buf.begin(0x2, DefaultVertexFormats.POSITION);
 		line.applyColour();
 		
 		for (int i = 0; i <= 40; i++)

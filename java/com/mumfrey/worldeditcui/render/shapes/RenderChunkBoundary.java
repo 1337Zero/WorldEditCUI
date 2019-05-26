@@ -1,12 +1,13 @@
 package com.mumfrey.worldeditcui.render.shapes;
 
-import static com.mumfrey.liteloader.gl.GL.*;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.gen.Heightmap.Type;
 
 import com.mumfrey.worldeditcui.render.LineStyle;
 import com.mumfrey.worldeditcui.render.RenderStyle;
@@ -44,9 +45,12 @@ public class RenderChunkBoundary extends RenderRegion
 		
 		this.grid.setPosition(new Vector3(xBase, yMin, zBase - 16), new Vector3(xBase + 16, yMax, zBase));
 		
-		glPushMatrix();
-		glTranslated(0.0, -cameraPos.getY(), 0.0);
-
+		//glPushMatrix();
+		GlStateManager.pushMatrix();
+		//glTranslated(0.0, -cameraPos.getY(), 0.0);
+		GlStateManager.translated(0.0, -cameraPos.getY(), 0.0);
+		//GlStateManager.translatef(0.0, -cameraPos.getY(), 0.0);
+		
 		this.grid.render(Vector3.ZERO);
 
 		this.renderChunkBorder(yMin, yMax, xBase, zBase);
@@ -56,7 +60,8 @@ public class RenderChunkBoundary extends RenderRegion
 			this.renderChunkBoundary(xChunk, zChunk, xBase, zBase);
 		}
 
-		glPopMatrix();
+		//glPopMatrix();
+		GlStateManager.popMatrix();
 	}
 
 	private void renderChunkBorder(double yMin, double yMax, double xBase, double zBase)
@@ -70,7 +75,7 @@ public class RenderChunkBoundary extends RenderRegion
 		{
 			if (line.prepare(this.style.getRenderType()))
 			{
-				buf.begin(GL_LINES, VF_POSITION);
+				buf.begin(0x1, DefaultVertexFormats.POSITION);
 				line.applyColour();
 				
 				for (int x = -16; x <= 32; x += spacing)
@@ -104,13 +109,15 @@ public class RenderChunkBoundary extends RenderRegion
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buf = tessellator.getBuffer();
 
-		Chunk chunk = this.mc.world.getChunkFromChunkCoords(xChunk, zChunk);
+		
+		//Chunk chunk = this.mc.world.getChunkFromChunkCoords(xChunk, zChunk);
+		Chunk chunk = this.mc.world.getChunk(xChunk, zChunk);
 
 		for (LineStyle line : this.style.getLines())
 		{
 			if (line.prepare(this.style.getRenderType()))
 			{
-				buf.begin(GL_LINES, VF_POSITION);
+				buf.begin(0x1, DefaultVertexFormats.POSITION);
 				line.applyColour();
 
 				int[][] lastHeight = { { -1, -1 }, { -1, -1 } };
@@ -120,7 +127,8 @@ public class RenderChunkBoundary extends RenderRegion
 					{
 						for (int axis = 0; axis < 2; axis++)
 						{
-							height = axis == 0 ? chunk.getHeightValue(j * 15, i) : chunk.getHeightValue(i, j * 15);
+							//height = axis == 0 ? chunk.getHeightValue(j * 15, i) : chunk.getHeightValue(i, j * 15);
+							height = axis == 0 ? chunk.getWorld().getHeight(Type.WORLD_SURFACE, j * 15, i) :chunk.getWorld().getHeight(Type.WORLD_SURFACE,i, j * 15);
 							double xPos = axis == 0 ? xBase + (j * 16) : xBase + i;
 							double zPos = axis == 0 ? zBase - 16 + i : zBase - 16 + (j * 16);
 							if (lastHeight[axis][j] > -1 && height != lastHeight[axis][j])

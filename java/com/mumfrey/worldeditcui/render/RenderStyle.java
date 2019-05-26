@@ -1,6 +1,5 @@
 package com.mumfrey.worldeditcui.render;
 
-import static com.mumfrey.liteloader.gl.GL.*;
 
 import com.mumfrey.worldeditcui.config.Colour;
 
@@ -20,17 +19,17 @@ public interface RenderStyle
 		/**
 		 * Render type to draw lines regardless of depth
 		 */
-		ANY(GL_ALWAYS),
+		ANY(0x207),
 		
 		/**
 		 * Render type for "hidden" lines (under world geometry)
 		 */
-		HIDDEN(GL_GEQUAL),
+		HIDDEN(0x206),
 		
 		/**
 		 * Render type for visible lines (over world geometry) 
 		 */
-		VISIBLE(GL_LESS);
+		VISIBLE(0x201);
 		
 		final int depthFunc;
 

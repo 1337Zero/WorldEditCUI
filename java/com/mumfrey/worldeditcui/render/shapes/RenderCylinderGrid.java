@@ -1,9 +1,9 @@
 package com.mumfrey.worldeditcui.render.shapes;
 
-import static com.mumfrey.liteloader.gl.GL.*;
 
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 
 import com.mumfrey.worldeditcui.render.RenderStyle;
 import com.mumfrey.worldeditcui.render.LineStyle;
@@ -62,7 +62,7 @@ public class RenderCylinderGrid extends RenderRegion
 			for (double tempX = negRadiusX; tempX <= posRadiusX; ++tempX)
 			{
 				double tempZ = this.radZ * Math.cos(Math.asin(tempX / this.radX));
-				buf.begin(GL_LINE_LOOP, VF_POSITION);
+				buf.begin(0x2, DefaultVertexFormats.POSITION);
 				line.applyColour();
 				
 				buf.pos(xPos + tempX, tmaxY - cameraPos.getY(), zPos + tempZ).endVertex();
@@ -76,7 +76,7 @@ public class RenderCylinderGrid extends RenderRegion
 			for (double tempZ = negRadiusZ; tempZ <= posRadiusZ; ++tempZ)
 			{
 				double tempX = this.radX * Math.sin(Math.acos(tempZ / this.radZ));
-				buf.begin(GL_LINE_LOOP, VF_POSITION);
+				buf.begin(0x2, DefaultVertexFormats.POSITION);
 				line.applyColour();
 				
 				buf.pos(xPos + tempX, tmaxY - cameraPos.getY(), zPos + tempZ).endVertex();

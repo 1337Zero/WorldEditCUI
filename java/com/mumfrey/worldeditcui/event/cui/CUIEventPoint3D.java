@@ -41,7 +41,7 @@ public class CUIEventPoint3D extends CUIEvent
 		
 		if (this.multi && "~".equals(this.getString(1)) && "~".equals(this.getString(2)) && "~".equals(this.getString(3)))
 		{
-			Minecraft mc = Minecraft.getMinecraft();
+			Minecraft mc = Minecraft.getInstance();
 			Entity entity = mc.getRenderViewEntity();
 			double hitDistance = mc.playerController.getBlockReachDistance();
 			

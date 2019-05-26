@@ -9,8 +9,8 @@ import java.lang.reflect.Field;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
-import com.mumfrey.liteloader.core.LiteLoader;
 import com.mumfrey.worldeditcui.InitialisationFactory;
+import com.mumfrey.worldeditcui.LiteModWorldEditCUI;
 import com.mumfrey.worldeditcui.render.ConfiguredColour;
 
 /**
@@ -117,7 +117,7 @@ public final class CUIConfiguration implements InitialisationFactory
 	
 	public static CUIConfiguration create()
 	{
-		File jsonFile = new File(LiteLoader.getCommonConfigFolder(), CUIConfiguration.CONFIG_FILE_NAME);
+		File jsonFile = new File(LiteModWorldEditCUI.path, CUIConfiguration.CONFIG_FILE_NAME);
 		
 		if (jsonFile.exists())
 		{
@@ -148,7 +148,7 @@ public final class CUIConfiguration implements InitialisationFactory
 	
 	public void save()
 	{
-		File jsonFile = new File(LiteLoader.getCommonConfigFolder(), CUIConfiguration.CONFIG_FILE_NAME);
+		File jsonFile = new File(LiteModWorldEditCUI.path, CUIConfiguration.CONFIG_FILE_NAME);
 		
 		FileWriter fileWriter = null;
 		

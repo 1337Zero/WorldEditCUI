@@ -1,11 +1,12 @@
 package com.mumfrey.worldeditcui.render.shapes;
 
-import static com.mumfrey.liteloader.gl.GL.*;
 
 import java.util.List;
 
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.vertex.VertexFormat;
 
 import com.mumfrey.worldeditcui.render.RenderStyle;
 import com.mumfrey.worldeditcui.render.LineStyle;
@@ -54,7 +55,7 @@ public class Render2DGrid extends RenderRegion
 				continue;
 			}
 			
-			buf.begin(GL_LINE_LOOP, VF_POSITION);
+			buf.begin(0x2, DefaultVertexFormats.POSITION);
 			line.applyColour();
 			for (PointRectangle point : this.points)
 			{

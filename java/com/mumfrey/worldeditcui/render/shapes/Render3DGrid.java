@@ -1,9 +1,10 @@
 package com.mumfrey.worldeditcui.render.shapes;
 
-import static com.mumfrey.liteloader.gl.GL.*;
 
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 
 import com.mumfrey.worldeditcui.render.LineStyle;
 import com.mumfrey.worldeditcui.render.RenderStyle;
@@ -79,7 +80,8 @@ public class Render3DGrid extends RenderRegion
 		
 		if (this.spacing != 1.0)
 		{
-			glDisableCulling();
+			//glDisableCulling();
+			GlStateManager.disableCull();
 			
 			double[] vertices = {
 					x1, y1, z1, x2, y1, z1, x2, y1, z2, x1, y1, z2, // bottom
@@ -94,7 +96,7 @@ public class Render3DGrid extends RenderRegion
 			{
 				if (line.prepare(this.style.getRenderType()))
 				{
-					buf.begin(GL_QUADS, VF_POSITION);
+					buf.begin(0x7, DefaultVertexFormats.POSITION);
 					line.applyColour(0.25F);
 					for (int i = 0; i < vertices.length; i += 3)
 					{
@@ -104,7 +106,8 @@ public class Render3DGrid extends RenderRegion
 				}
 			}
 			
-			glEnableCulling();
+			//glEnableCulling();
+			GlStateManager.enableCull();
 		}
 		
 		if (this.spacing < Render3DGrid.MIN_SPACING)
@@ -120,7 +123,7 @@ public class Render3DGrid extends RenderRegion
 				continue;
 			}
 			
-			buf.begin(GL_LINES, VF_POSITION);
+			buf.begin(0x1, DefaultVertexFormats.POSITION);
 			line.applyColour();
 			
 			for (double y = Math.max(y1, -cullAt); y <= y2 && y <= cullAt; y += this.spacing)

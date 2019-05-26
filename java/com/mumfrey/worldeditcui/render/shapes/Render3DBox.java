@@ -1,9 +1,9 @@
 package com.mumfrey.worldeditcui.render.shapes;
 
-import static com.mumfrey.liteloader.gl.GL.*;
 
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 
 import com.mumfrey.worldeditcui.render.RenderStyle;
 import com.mumfrey.worldeditcui.render.LineStyle;
@@ -75,7 +75,7 @@ public class Render3DBox extends RenderRegion
 			}
 			
 			// Draw bottom face
-			buf.begin(GL_LINE_LOOP, VF_POSITION);
+			buf.begin(0x2, DefaultVertexFormats.POSITION);
 			line.applyColour();
 			buf.pos(x1, y1, z1).endVertex();
 			buf.pos(x2, y1, z1).endVertex();
@@ -84,7 +84,7 @@ public class Render3DBox extends RenderRegion
 			tessellator.draw();
 			
 			// Draw top face
-			buf.begin(GL_LINE_LOOP, VF_POSITION);
+			buf.begin(0x2, DefaultVertexFormats.POSITION);
 			line.applyColour();
 			buf.pos(x1, y2, z1).endVertex();
 			buf.pos(x2, y2, z1).endVertex();
@@ -93,7 +93,7 @@ public class Render3DBox extends RenderRegion
 			tessellator.draw();
 			
 			// Draw join top and bottom faces
-			buf.begin(GL_LINES, VF_POSITION);
+			buf.begin(0x1, DefaultVertexFormats.POSITION);
 			line.applyColour();
 			
 			buf.pos(x1, y1, z1).endVertex();

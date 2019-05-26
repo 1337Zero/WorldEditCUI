@@ -1,8 +1,7 @@
 package com.mumfrey.worldeditcui.event.listeners;
 
-import static com.mumfrey.liteloader.gl.GL.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.GlStateManager;
 
 import com.mumfrey.worldeditcui.WorldEditCUI;
 import com.mumfrey.worldeditcui.util.Vector3;
@@ -30,35 +29,50 @@ public class CUIListenerWorldRender
 	{
 		try
 		{
-			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
+			//TODO: For what is this used?
+			//OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
 			
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			glEnableBlend();
-			glEnableAlphaTest();
-			glAlphaFunc(GL_GREATER, 0.0F);
-			glDisableTexture2D();
-			glEnableDepthTest();
-			glDepthMask(false);
-			glPushMatrix();
-			glDisableFog();
-			
+			//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			GlStateManager.blendFunc(0x302, 0x303);
+			//glEnableBlend();
+			GlStateManager.enableBlend();
+			//glEnableAlphaTest();
+			GlStateManager.enableAlphaTest();
+			//glAlphaFunc(0x204, 0.0F);
+			GlStateManager.alphaFunc(0x204, 0.0F);
+			//glDisableTexture2D();
+			GlStateManager.disableTexture2D();
+			//glEnableDepthTest();
+			GlStateManager.enableDepthTest();
+			//glDepthMask(false);
+			GlStateManager.depthMask(false);
+			//glPushMatrix();
+			GlStateManager.pushMatrix();
+			//glDisableFog();
+			GlStateManager.disableFog();
 			try
 			{
 				Vector3 cameraPos = new Vector3(this.minecraft.getRenderViewEntity(), partialTicks); 
-				glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
+				GlStateManager.color4f(1.0F, 1.0F, 1.0F, 0.5F);
+				//glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
 				this.controller.renderSelections(cameraPos, partialTicks);
 			}
 			catch (Exception e)
 			{
 			}
+			GlStateManager.depthFunc(0x203);
+			//glDepthFunc(GL_LEQUAL);
+		    GlStateManager.popMatrix();
+			//glPopMatrix();
 			
-			glDepthFunc(GL_LEQUAL);
-			glPopMatrix();
-			
-			glDepthMask(true);
-			glEnableTexture2D();
-			glDisableBlend();
-			glAlphaFunc(GL_GREATER, 0.1F);
+		    GlStateManager.depthMask(true);
+			//glDepthMask(true);
+			GlStateManager.enableTexture2D();
+		    //glEnableTexture2D();
+			GlStateManager.disableBlend();
+			//glDisableBlend();
+			GlStateManager.alphaFunc(0x204, 0.1F);
+			//glAlphaFunc(GL_GREATER, 0.1F);
 		}
 		catch (Exception ex) {}
 	}

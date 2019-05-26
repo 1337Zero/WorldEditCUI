@@ -1,6 +1,5 @@
 package com.mumfrey.worldeditcui.render.points;
 
-import com.mumfrey.liteloader.util.EntityUtilities;
 import com.mumfrey.worldeditcui.util.Vector3;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;

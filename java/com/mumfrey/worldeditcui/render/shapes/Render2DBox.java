@@ -9,8 +9,10 @@ import com.mumfrey.worldeditcui.util.Vector2;
 import com.mumfrey.worldeditcui.util.Vector3;
 
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.BufferBuilder;
-import static com.mumfrey.liteloader.gl.GL.*;
+
+import static org.lwjgl.opengl.GL11.*;
 
 /**
  * Draws the top and bottom rings of a polygon region
@@ -45,7 +47,8 @@ public class Render2DBox extends RenderRegion
 				continue;
 			}
 			
-			buf.begin(GL_LINES, VF_POSITION);
+			//buf.begin(GL_LINES, VF_POSITION);
+			buf.begin(GL_LINES, DefaultVertexFormats.POSITION );
 			line.applyColour();
 			
 			for (PointRectangle point : this.points)

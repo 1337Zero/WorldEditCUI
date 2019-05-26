@@ -1,0 +1,10 @@
+{
+  "id": "WorldEditCUI",
+  "name": "WorldEditCUI",
+  "authors": [
+    "1337Zero"
+  ],
+  "listeners": [
+    "com.mumfrey.worldeditcui.LiteModWorldEditCUI"
+  ]
+}
