@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "worldeditcui",
+  "version": "1.15.2",
+
+  "name": "worldeditcui",
+  "description": "Displays worldedit selection client sided",
+  "authors": [
+    "1337Zero",
+    "Mumfrey"
+  ],
+  "contact": {
+    "homepage": "https://cultcraft.de",
+    "sources": "https://github.com/1337Zero/WorldEditCUI"
+  },
+
+  "license": "CC0-1.0",
+  
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.mumfrey.worldeditcui.LiteModWorldEditCUI"
+    ]
+  },
+  "mixins": [
+    "mixins.wecui.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.7.2",
+    "fabric": "*",
+    "minecraft": "1.15.x"
+  },
+  "suggests": {
+    "flamingo": "*"
+  }
+}
