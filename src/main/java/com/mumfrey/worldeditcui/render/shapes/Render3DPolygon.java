@@ -25,7 +25,6 @@ public class Render3DPolygon extends RenderRegion {
 
 	@Override
 	public void render(Vector3 cameraPos) {
-		System.out.println("render Render3DPolygon");
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buf = tessellator.getBuffer();
 
@@ -37,9 +36,7 @@ public class Render3DPolygon extends RenderRegion {
 			buf.begin(0x2, VertexFormats.POSITION);
 			line.applyColour();
 			for (Vector3 vertex : this.vertices) {
-				// buf.vertex(vertex.getX() - cameraPos.getX(), vertex.getY() -
-				// cameraPos.getY(), vertex.getZ() - cameraPos.getZ()).next();
-				buf.vertex(vertex.getX(), vertex.getY(), vertex.getZ()).next();
+				buf.vertex(vertex.getX() - cameraPos.getX(), vertex.getY() - cameraPos.getY(), vertex.getZ() - cameraPos.getZ()).next();
 			}
 			tessellator.draw();
 		}

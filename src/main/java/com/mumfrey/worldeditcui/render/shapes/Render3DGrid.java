@@ -59,24 +59,16 @@ public class Render3DGrid extends RenderRegion {
 
 	@Override
 	public void render(Vector3 cameraPos) {
-		System.out.println("render Render3DGrid");
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buf = tessellator.getBuffer();
-		/*
-		 * double x1 = this.first.getX() - cameraPos.getX(); double y1 =
-		 * this.first.getY() - cameraPos.getY(); double z1 = this.first.getZ() -
-		 * cameraPos.getZ(); double x2 = this.second.getX() - cameraPos.getX(); double
-		 * y2 = this.second.getY() - cameraPos.getY(); double z2 = this.second.getZ() -
-		 * cameraPos.getZ();
-		 */
-
-		double x1 = this.first.getX();
-		double y1 = this.first.getY() - (MinecraftClient.getInstance().player.getEyeY()-MinecraftClient.getInstance().player.getPos().y);
-		double z1 = this.first.getZ();
-		double x2 = this.second.getX();
-		double y2 = this.second.getY() - (MinecraftClient.getInstance().player.getEyeY()-MinecraftClient.getInstance().player.getPos().y);
-		double z2 = this.second.getZ();
-
+		
+		 double x1 = this.first.getX() - cameraPos.getX(); 
+		 double y1 = this.first.getY() - cameraPos.getY(); 
+		 double z1 = this.first.getZ() - cameraPos.getZ(); 
+		 double x2 = this.second.getX() - cameraPos.getX(); 
+		 double y2 = this.second.getY() - cameraPos.getY(); 
+		 double z2 = this.second.getZ() - cameraPos.getZ();
+		
 		if (this.spacing != 1.0) {
 			// glDisableCulling();
 			GlStateManager.disableCull();

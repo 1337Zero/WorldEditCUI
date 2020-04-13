@@ -1,0 +1,102 @@
+package net.minecraft.entity.mob;
+
+import javax.annotation.Nullable;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityData;
+import net.minecraft.entity.EntityDimensions;
+import net.minecraft.entity.EntityPose;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnType;
+import net.minecraft.entity.ai.pathing.PathNodeType;
+import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.LocalDifficulty;
+import net.minecraft.world.World;
+
+public class WitherSkeletonEntity extends AbstractSkeletonEntity {
+   public WitherSkeletonEntity(EntityType<? extends WitherSkeletonEntity> entityType, World world) {
+      super(entityType, world);
+      this.setPathfindingPenalty(PathNodeType.LAVA, 8.0F);
+   }
+
+   protected SoundEvent getAmbientSound() {
+      return SoundEvents.ENTITY_WITHER_SKELETON_AMBIENT;
+   }
+
+   protected SoundEvent getHurtSound(DamageSource source) {
+      return SoundEvents.ENTITY_WITHER_SKELETON_HURT;
+   }
+
+   protected SoundEvent getDeathSound() {
+      return SoundEvents.ENTITY_WITHER_SKELETON_DEATH;
+   }
+
+   SoundEvent getStepSound() {
+      return SoundEvents.ENTITY_WITHER_SKELETON_STEP;
+   }
+
+   protected void dropEquipment(DamageSource source, int lootingMultiplier, boolean allowDrops) {
+      super.dropEquipment(source, lootingMultiplier, allowDrops);
+      Entity entity = source.getAttacker();
+      if (entity instanceof CreeperEntity) {
+         CreeperEntity creeperEntity = (CreeperEntity)entity;
+         if (creeperEntity.shouldDropHead()) {
+            creeperEntity.onHeadDropped();
+            this.dropItem(Items.WITHER_SKELETON_SKULL);
+         }
+      }
+
+   }
+
+   protected void initEquipment(LocalDifficulty difficulty) {
+      this.equipStack(EquipmentSlot.MAINHAND, new ItemStack(Items.STONE_SWORD));
+   }
+
+   protected void updateEnchantments(LocalDifficulty difficulty) {
+   }
+
+   @Nullable
+   public EntityData initialize(IWorld world, LocalDifficulty difficulty, SpawnType spawnType, @Nullable EntityData entityData, @Nullable CompoundTag entityTag) {
+      EntityData entityData2 = super.initialize(world, difficulty, spawnType, entityData, entityTag);
+      this.getAttributeInstance(EntityAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+      this.updateAttackType();
+      return entityData2;
+   }
+
+   protected float getActiveEyeHeight(EntityPose pose, EntityDimensions dimensions) {
+      return 2.1F;
+   }
+
+   public boolean tryAttack(Entity target) {
+      if (!super.tryAttack(target)) {
+         return false;
+      } else {
+         if (target instanceof LivingEntity) {
+            ((LivingEntity)target).addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 200));
+         }
+
+         return true;
+      }
+   }
+
+   protected ProjectileEntity createArrowProjectile(ItemStack arrow, float f) {
+      ProjectileEntity projectileEntity = super.createArrowProjectile(arrow, f);
+      projectileEntity.setOnFireFor(100);
+      return projectileEntity;
+   }
+
+   public boolean canHaveStatusEffect(StatusEffectInstance effect) {
+      return effect.getEffectType() == StatusEffects.WITHER ? false : super.canHaveStatusEffect(effect);
+   }
+}

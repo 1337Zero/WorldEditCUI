@@ -34,28 +34,24 @@ public class Render2DBox extends RenderRegion {
 
 	@Override
 	public void render(Vector3 cameraPos) {
-		System.out.println("render Render2DBox");
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buf = tessellator.getBuffer();
-		// double off = 0.03 - cameraPos.getY();
-		double off = 0.03;
+		//double off = 0.03;
+		double off = 0.03 - cameraPos.getY();//original
 		for (LineStyle line : this.style.getLines()) {
 			if (!line.prepare(this.style.getRenderType())) {
 				continue;
 			}
 
-			// buf.begin(GL_LINES, VF_POSITION);
 			buf.begin(GL_LINES, VertexFormats.POSITION);
 			line.applyColour();
 
 			for (PointRectangle point : this.points) {
 				if (point != null) {
 					Vector2 pos = point.getPoint();
-					// double x = pos.getX() - cameraPos.getX();
-					// double z = pos.getY() - cameraPos.getZ();
+					 double x = pos.getX() - cameraPos.getX();
+					 double z = pos.getY() - cameraPos.getZ();
 
-					double x = pos.getX();
-					double z = pos.getY();
 					buf.vertex(x + 0.5, this.min + off, z + 0.5).next();
 					buf.vertex(x + 0.5, this.max + 1 + off, z + 0.5).next();
 				}

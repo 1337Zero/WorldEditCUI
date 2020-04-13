@@ -34,8 +34,9 @@ public class CuboidRegion extends Region
 	@Override
 	public void render(Vector3 cameraPos, float partialTicks)
 	{
-		if (this.points[0] != null && this.points[1] != null)
-		{
+		if (this.points[0] != null && this.points[1] != null){
+
+			//System.out.println("render cuboidRegion");
 			this.points[0].updatePoint(partialTicks);
 			this.points[1].updatePoint(partialTicks);
 			

@@ -27,8 +27,8 @@ public final class CUIConfiguration implements InitialisationFactory
 	
 	@Expose private boolean debugMode = false;
 	@Expose private boolean ignoreUpdates = false;
-	@Expose private boolean promiscuous = false;
-	@Expose private boolean alwaysOnTop = false;
+	@Expose private boolean promiscuous = true;
+	@Expose private boolean alwaysOnTop = true;
 	@Expose private boolean clearAllOnKey = false;
 	
 	@Expose private Colour cuboidGridColor        = ConfiguredColour.CUBOIDBOX.getDefault();

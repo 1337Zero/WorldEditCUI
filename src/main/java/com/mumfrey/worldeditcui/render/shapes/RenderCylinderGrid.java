@@ -35,7 +35,6 @@ public class RenderCylinderGrid extends RenderRegion {
 
 	@Override
 	public void render(Vector3 cameraPos) {
-		System.out.println("render RenderCylinderGrid");
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buf = tessellator.getBuffer();
 
@@ -62,17 +61,10 @@ public class RenderCylinderGrid extends RenderRegion {
 				buf.begin(0x2, VertexFormats.POSITION);
 				line.applyColour();
 
-				/*
-				 * buf.vertex(xPos + tempX, tmaxY - cameraPos.getY(), zPos + tempZ).next();
-				 * buf.vertex(xPos + tempX, tmaxY - cameraPos.getY(), zPos - tempZ).next();
-				 * buf.vertex(xPos + tempX, tminY - cameraPos.getY(), zPos - tempZ).next();
-				 * buf.vertex(xPos + tempX, tminY - cameraPos.getY(), zPos + tempZ).next();
-				 */
-
-				buf.vertex(xPos + tempX, tmaxY, zPos + tempZ).next();
-				buf.vertex(xPos + tempX, tmaxY, zPos - tempZ).next();
-				buf.vertex(xPos + tempX, tminY, zPos - tempZ).next();
-				buf.vertex(xPos + tempX, tminY, zPos + tempZ).next();
+				buf.vertex(xPos + tempX, tmaxY - cameraPos.getY(), zPos + tempZ).next();
+				buf.vertex(xPos + tempX, tmaxY - cameraPos.getY(), zPos - tempZ).next();
+				buf.vertex(xPos + tempX, tminY - cameraPos.getY(), zPos - tempZ).next();
+				buf.vertex(xPos + tempX, tminY - cameraPos.getY(), zPos + tempZ).next();
 
 				tessellator.draw();
 			}
@@ -82,17 +74,10 @@ public class RenderCylinderGrid extends RenderRegion {
 				buf.begin(0x2, VertexFormats.POSITION);
 				line.applyColour();
 
-				/*
-				 * buf.vertex(xPos + tempX, tmaxY - cameraPos.getY(), zPos + tempZ).next();
-				 * buf.vertex(xPos - tempX, tmaxY - cameraPos.getY(), zPos + tempZ).next();
-				 * buf.vertex(xPos - tempX, tminY - cameraPos.getY(), zPos + tempZ).next();
-				 * buf.vertex(xPos + tempX, tminY - cameraPos.getY(), zPos + tempZ).next();
-				 */
-
-				buf.vertex(xPos + tempX, tmaxY, zPos + tempZ).next();
-				buf.vertex(xPos - tempX, tmaxY, zPos + tempZ).next();
-				buf.vertex(xPos - tempX, tminY, zPos + tempZ).next();
-				buf.vertex(xPos + tempX, tminY, zPos + tempZ).next();
+				buf.vertex(xPos + tempX, tmaxY - cameraPos.getY(), zPos + tempZ).next();
+				buf.vertex(xPos - tempX, tmaxY - cameraPos.getY(), zPos + tempZ).next();
+				buf.vertex(xPos - tempX, tminY - cameraPos.getY(), zPos + tempZ).next();
+				buf.vertex(xPos + tempX, tminY - cameraPos.getY(), zPos + tempZ).next();
 
 				tessellator.draw();
 			}

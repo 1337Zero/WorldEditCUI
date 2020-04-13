@@ -2,11 +2,11 @@
   "required": true,
   "minVersion": "0.7.7",
   "package": "com.mumfrey.worldeditcui.mixin",
-  "refmap": "mixin.example.refmap.json",
+  "refmap": "worldedit_cui-refmap.json",
   "target": "@env(DEFAULT)",
   "mixins": [
-    "MixinCustomPayLoadHandler",
-    "MixinDebugRenderer"
+    "MixinDebugRenderer",
+    "MixinCustomPayLoadHandler"
   ],
   "injectors": {
     "defaultRequire": 1

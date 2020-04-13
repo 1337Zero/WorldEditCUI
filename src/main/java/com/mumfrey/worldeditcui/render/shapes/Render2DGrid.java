@@ -32,7 +32,6 @@ public class Render2DGrid extends RenderRegion {
 
 	@Override
 	public void render(Vector3 cameraPos) {
-		System.out.println("render Render2DGrid");
 		double off = 0.03 + (MinecraftClient.getInstance().player.getEyeY()-MinecraftClient.getInstance().player.getPos().y);;
 		for (double height = this.min; height <= this.max + 1; height++) {
 			this.drawPoly(cameraPos, height + off);
@@ -52,15 +51,13 @@ public class Render2DGrid extends RenderRegion {
 			for (PointRectangle point : this.points) {
 				if (point != null) {
 					Vector2 pos = point.getPoint();
-					/*
-					 * double x = pos.getX() - cameraPos.getX(); double z = pos.getY() -
-					 * cameraPos.getZ(); buf.vertex(x + 0.5, height - cameraPos.getY(), z +
-					 * 0.5).next();
-					 */
-					height -= (MinecraftClient.getInstance().player.getEyeY()-MinecraftClient.getInstance().player.getPos().y);
+					
+					 //double x = pos.getX() - cameraPos.getX(); double z = pos.getY() -cameraPos.getZ(); buf.vertex(x + 0.5, height - cameraPos.getY(), z +0.5).next();
+					
+					//height -= (MinecraftClient.getInstance().player.getEyeY()-MinecraftClient.getInstance().player.getPos().y);
 
-					double x = pos.getX();
-					double z = pos.getY();
+					double x = pos.getX() - cameraPos.getX();
+					double z = pos.getY() - cameraPos.getZ();
 					buf.vertex(x + 0.5, height, z + 0.5).next();
 				}
 			}

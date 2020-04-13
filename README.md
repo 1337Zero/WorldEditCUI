@@ -1,31 +1,16 @@
-WorldEditCUI
-------------
+# Fabric Example Mod
 
-A graphical user interface for WorldEdit. WorldEditCUI is designed 
-to assist in using WorldEdit, as well as preventing accidental errors.
+## Setup
 
-Please note that this is not WorldEdit, which allows you to make changes
-to your world, but WorldEditCUI, a frontend for WorldEdit. You must have
-WorldEdit installed on your server or in SinglePlayerCommands to use this mod.
- 
+1. Edit build.gradle and mod.json to suit your needs.
+    * The "mixins" object can be removed from mod.json if you do not need to use mixins.
+    * Please replace all occurences of "modid" with your own mod ID - sometimes, a different string may also suffice.
+2. Run the following command:
 
-Compiling
----------
+```
+./gradlew idea
+```
 
-You will need a [LiteLoader MCP workspace](https://www.youtube.com/watch?v=RMpvo-F4AFc), once you have that set up simply import the project and run the ant build script.
+## License
 
-
-Credits
--------
-
- * [lahwran](https://github.com/lahwran) - Creator of the original WorldEdit CUI!
- * [sk89q](http://sk89q.com) for writing the WorldEdit plugin!
- * TomyLobo and zml2008 for maintaining WorldEdit!
- * [Apache Commons](http://commons.apache.org/) for the join() methods!
- * [Mojang](http://mojang.com) - for making such an awesome game!
-
-
-Legal stuff
------------
-
-This code is licensed under the Eclipse Public License. 
+This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.

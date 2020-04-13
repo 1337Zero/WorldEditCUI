@@ -32,17 +32,12 @@ public class RenderCylinderBox extends RenderRegion {
 
 	@Override
 	public void render(Vector3 cameraPos) {
-		System.out.println("render RenderCylinderBox");
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buf = tessellator.getBuffer();
 
-		/*
-		 * double xPos = this.centreX - cameraPos.getX(); double zPos = this.centreZ -
-		 * cameraPos.getZ();
-		 */
+		double xPos = this.centreX - cameraPos.getX();
+		double zPos = this.centreZ - cameraPos.getZ();
 
-		double xPos = this.centreX;
-		double zPos = this.centreZ;
 
 		for (LineStyle line : this.style.getLines()) {
 			if (!line.prepare(this.style.getRenderType())) {
@@ -59,9 +54,7 @@ public class RenderCylinderBox extends RenderRegion {
 					double tempX = this.radX * Math.cos(tempTheta);
 					double tempZ = this.radZ * Math.sin(tempTheta);
 
-					// buf.vertex(xPos + tempX, yBlock - cameraPos.getY(), zPos + tempZ).next();
-
-					buf.vertex(xPos + tempX, yBlock, zPos + tempZ).next();
+					buf.vertex(xPos + tempX, yBlock - cameraPos.getY(), zPos + tempZ).next();
 				}
 				tessellator.draw();
 			}

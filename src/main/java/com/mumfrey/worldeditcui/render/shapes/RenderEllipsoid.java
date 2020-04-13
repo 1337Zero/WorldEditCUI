@@ -35,14 +35,9 @@ public class RenderEllipsoid extends RenderRegion {
 
 	@Override
 	public void render(Vector3 cameraPos) {
-		System.out.println("render RenderEllipsoid");
-		// glPushMatrix();
+		
 		GlStateManager.pushMatrix();
-		// glTranslated(this.centreX - cameraPos.getX(), this.centreY -
-		// cameraPos.getY(), this.centreZ - cameraPos.getZ());
-		// GlStateManager.translated(this.centreX - cameraPos.getX(), this.centreY -
-		// cameraPos.getY(), this.centreZ - cameraPos.getZ());
-		GlStateManager.translated(this.centreX, this.centreY, this.centreZ);
+		GlStateManager.translated(this.centreX - cameraPos.getX(), this.centreY - cameraPos.getY(), this.centreZ - cameraPos.getZ());
 
 		for (LineStyle line : this.style.getLines()) {
 			if (line.prepare(this.style.getRenderType())) {
@@ -52,7 +47,6 @@ public class RenderEllipsoid extends RenderRegion {
 			}
 		}
 
-		// glPopMatrix();
 		GlStateManager.popMatrix();
 	}
 

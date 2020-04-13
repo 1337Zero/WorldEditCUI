@@ -29,7 +29,6 @@ public class RenderChunkBoundary extends RenderRegion {
 
 	@Override
 	public void render(Vector3 cameraPos) {
-		System.out.println("render RenderChunkBoundary");
 		double yMax = this.mc.world != null ? this.mc.world.getHeight() : 256.0;
 		double yMin = 0.0;
 
@@ -43,15 +42,15 @@ public class RenderChunkBoundary extends RenderRegion {
 		// double zBase = (0 - (zBlock - (zChunk * 16)) - (cameraPos.getZ() - zBlock)) +
 		// 16;
 
-		double xBase = 0 - (xBlock - (xChunk * 16)) - (xBlock);
-		double zBase = (0 - (zBlock - (zChunk * 16)) - (zBlock)) + 16;
+		double xBase = 0 - (xBlock - (xChunk * 16)) - (cameraPos.getX() - xBlock);
+		double zBase = (0 - (zBlock - (zChunk * 16)) - (cameraPos.getZ() - zBlock)) + 16;
 
 		this.grid.setPosition(new Vector3(xBase, yMin, zBase - 16), new Vector3(xBase + 16, yMax, zBase));
 
 		// glPushMatrix();
 		GlStateManager.pushMatrix();
 		// glTranslated(0.0, -cameraPos.getY(), 0.0);
-		// GlStateManager.translated(0.0, -cameraPos.getY(), 0.0);
+		 GlStateManager.translated(0.0, -cameraPos.getY(), 0.0);
 		// GlStateManager.translatef(0.0, -cameraPos.getY(), 0.0);
 
 		this.grid.render(Vector3.ZERO);

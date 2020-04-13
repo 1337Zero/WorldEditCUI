@@ -6,7 +6,10 @@ import org.lwjgl.opengl.GL13;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.render.Camera;
+import net.minecraft.util.math.Vec3d;
 
 public class RenderHelper {
 
@@ -16,9 +19,7 @@ public class RenderHelper {
 	 * @param player
 	 */
 	public static void setUpRenderer(float partialTicks,ClientPlayerEntity player){
-		double x = player.prevX + (player.getX() - player.prevX) * partialTicks;
-		double y = player.prevY + (player.getY() - player.prevY) * partialTicks;
-		double z = player.prevZ + (player.getZ() - player.prevZ) * partialTicks;
+
 		
 		GlStateManager.pushMatrix();
 		GlStateManager.multiTexCoords2f(GL13.GL_TEXTURE1,240F, 240F);
@@ -32,10 +33,15 @@ public class RenderHelper {
 	    
 	    GlStateManager.depthFunc(515);
 	    GL11.glLineWidth(1.0F);
-	    GlStateManager.translated(-x, -y, -z);
+	    
+	    Camera c = MinecraftClient.getInstance().gameRenderer.getCamera();    	
+	    Vec3d vec = MinecraftClient.getInstance().gameRenderer.getCamera().getPos();
+	    GlStateManager.translated(-vec.x, -c.getPos().y, -vec.z);
+	    
 	    RenderSystem.shadeModel(7425);
 	    RenderSystem.lineWidth(1.0F);
 	}	
+
 	/**
 	 * Normalizes the Render Engine, call this if you are done with drawin stuff
 	 */
