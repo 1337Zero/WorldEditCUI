@@ -92,7 +92,10 @@ public class LiteModWorldEditCUI implements ModInitializer, PacketConsumer,  Cli
 
 	public void onInitCompleted() {
 		path = System.getProperty("user.dir");
-		path = path + System.getProperty("file.separator") + "mods" + System.getProperty("file.separator") + "";
+		path = path + System.getProperty("file.separator") + "mods" + System.getProperty("file.separator") + "worldeditcui" + System.getProperty("file.separator");
+		File wecuiFolder = new File(path);
+		wecuiFolder.mkdirs();
+		
 		MinecraftClient minecraft = MinecraftClient.getInstance();
 		this.controller = new WorldEditCUI();
 		this.controller.initialise(minecraft);
@@ -208,20 +211,21 @@ public class LiteModWorldEditCUI implements ModInitializer, PacketConsumer,  Cli
 				this.lastWorld = mc.world;
 				this.lastPlayer = mc.player;
 
-				this.controller.getDebugger().debug("World change detected, sending new handshake");
+				
 				this.controller.clear();
 				if (mc.player != null && config.isPromiscuous()) {
-					mc.player.sendChatMessage("/we cui"); // Tricks WE to send the current selection
+					
 					//Delay the we cui command
 					Thread t1 =new Thread(new Runnable() {						
 						@Override
 						public void run() {
 							try {
-								Thread.sleep(1000);
+								Thread.sleep(config.getDelayedCommand());
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}
-							controller.getDebugger().debug("sending /we cui command");
+							controller.getDebugger().debug("sending /we cui command after " + config.getDelayedCommand() + " nanoseconds");
+							mc.player.sendChatMessage("/we cui"); // Tricks WE to send the current selection
 						}
 					});  
 					t1.start();  

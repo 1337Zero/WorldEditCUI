@@ -4,6 +4,7 @@
 build/
 out/
 classes/
+*gradle*
 
 # idea
 
@@ -23,3 +24,4 @@ bin/
 # fabric
 
 run/
+*.launch

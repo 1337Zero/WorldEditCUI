@@ -46,6 +46,12 @@ public final class CUIConfiguration implements InitialisationFactory
 	@Expose private Colour chunkBoundaryColour    = ConfiguredColour.CHUNKBOUNDARY.getDefault();
 	@Expose private Colour chunkGridColour        = ConfiguredColour.CHUNKGRID.getDefault();
 	
+	
+	@Expose private int delayedCommand = 1000;
+	
+	
+
+
 	/**
 	 * Copies the default config file to the proper directory if it does not
 	 * exist. It then reads the file and sets each variable to the proper value.
@@ -144,6 +150,9 @@ public final class CUIConfiguration implements InitialisationFactory
 		}
 		
 		return new CUIConfiguration();
+	}
+	public int getDelayedCommand() {
+		return delayedCommand;
 	}
 	
 	public void save()
