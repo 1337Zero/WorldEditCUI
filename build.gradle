@@ -10,6 +10,25 @@ archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
+
+version = version + "_b" + extractVersionCode()
+
+int extractVersionCode() {
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        workingDir projectDir
+        executable 'git'
+        args 'rev-list', '--count', 'HEAD'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim().toInteger()
+}
+
+repositories {
+	maven { url 'https://maven.fabricmc.net' }
+	mavenCentral()
+}
+
 minecraft {
 }
 
@@ -21,9 +40,16 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modCompile "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	
 
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.
+	
+	// Modmenu
+	modImplementation ("io.github.prospector:modmenu:1.10.0+build.28") {
+		force = true
+		transitive false
+	}
 }
 
 processResources {

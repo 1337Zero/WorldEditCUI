@@ -1,9 +1,13 @@
 package com.mumfrey.worldeditcui;
 
+import io.github.prospector.modmenu.api.ConfigScreenFactory;
+import io.github.prospector.modmenu.api.ModMenuApi;
+
 import io.netty.buffer.Unpooled;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 /*
 import org.dimdev.rift.listener.MessageAdder;
@@ -18,7 +22,6 @@ import net.minecraft.util.registry.IRegistry;*/
 import org.spongepowered.asm.launch.MixinBootstrap;
 import org.spongepowered.asm.mixin.Mixins;
 
-import net.minecraft.client.network.packet.CustomPayloadS2CPacket;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
@@ -30,12 +33,17 @@ import net.fabricmc.fabric.api.network.PacketConsumer;
 import net.fabricmc.fabric.api.network.PacketContext;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.SettingsScreen;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.mumfrey.worldeditcui.config.CUIConfiguration;
+import com.mumfrey.worldeditcui.config.ConfigScreen;
 import com.mumfrey.worldeditcui.event.listeners.CUIListenerChannel;
 import com.mumfrey.worldeditcui.event.listeners.CUIListenerWorldRender;
+import com.mumfrey.worldeditcui.gui.CUIConfigPanel;
 import com.mumfrey.worldeditcui.input.KeySetting;
 
 /**
@@ -45,7 +53,7 @@ import com.mumfrey.worldeditcui.input.KeySetting;
  * @author Julius Schoenhut (1337Zero)
  */
 
-public class LiteModWorldEditCUI implements ModInitializer, PacketConsumer,  ClientTickCallback{
+public class LiteModWorldEditCUI implements ModInitializer, PacketConsumer,  ClientTickCallback, ModMenuApi {
 
 	public static String path = "";
 
@@ -59,7 +67,6 @@ public class LiteModWorldEditCUI implements ModInitializer, PacketConsumer,  Cli
 	private ClientWorld lastWorld;
 	private PlayerEntity lastPlayer;
 
-	private static boolean joinedServer = false;
 	private boolean init = false;
 
 	private KeySetting keyBindToggleUI;
@@ -67,6 +74,7 @@ public class LiteModWorldEditCUI implements ModInitializer, PacketConsumer,  Cli
 	private KeySetting keyBindChunkBorder;
 	private KeySetting keyBindLShift;
 	private KeySetting keyBindRShift;
+	private KeySetting keyBindConfig;
 
 	private boolean visible = true;
 	private boolean alwaysOnTop = true;
@@ -77,22 +85,31 @@ public class LiteModWorldEditCUI implements ModInitializer, PacketConsumer,  Cli
 
 	private boolean registered = false;
 
+	public LiteModWorldEditCUI() {
+		LiteModWorldEditCUI.instance = this;
+	}
+	
 	public void init(File configPath) {
+		System.out.println("init");
 		init = true;
 		LiteModWorldEditCUI.instance = this;
-		keyBindToggleUI = new KeySetting(290, "wecui.keys.toggle");
-		keyBindClearSel = new KeySetting(291, "wecui.keys.clear");
-		keyBindChunkBorder = new KeySetting(292, "wecui.keys.chunk");
-		keyBindLShift = new KeySetting(340, "wecui.keys.control.lshift");
-		keyBindRShift = new KeySetting(344, "wecui.keys.control.rshift");
+		CUIConfiguration config = controller.getConfiguration();		
+		
+		keyBindToggleUI = new KeySetting(config.getKey_toggle(), "wecui.keys.toggle");
+		keyBindClearSel = new KeySetting(config.getKey_clear(), "wecui.keys.clear");
+		keyBindChunkBorder = new KeySetting(config.getKey_chunk(), "wecui.keys.chunk");
+		keyBindLShift = new KeySetting(config.getKey_lshift(), "wecui.keys.control.lshift");
+		keyBindRShift = new KeySetting(config.getKey_rshift(), "wecui.keys.control.rshift");
+		keyBindConfig =new KeySetting(config.getKey_control(), "wecui.keys.control.config");
 	}
 
 	public void upgradeSettings(String version, File configPath, File oldConfigPath) {
 	}
 
 	public void onInitCompleted() {
+		System.out.println("onInitCompleted");
 		path = System.getProperty("user.dir");
-		path = path + System.getProperty("file.separator") + "mods" + System.getProperty("file.separator") + "worldeditcui" + System.getProperty("file.separator");
+		path = path + System.getProperty("file.separator") + "config" + System.getProperty("file.separator") + "worldeditcui" + System.getProperty("file.separator");
 		File wecuiFolder = new File(path);
 		wecuiFolder.mkdirs();
 		
@@ -124,6 +141,7 @@ public class LiteModWorldEditCUI implements ModInitializer, PacketConsumer,  Cli
 			Identifier id = new Identifier(LiteModWorldEditCUI.CHANNEL_WECUI + ":" + SUB_CHANNEL_WECUI);
 			ServerSidePacketRegistry.INSTANCE.register(id, this);
 			ClientSidePacketRegistry.INSTANCE.register(new Identifier(LiteModWorldEditCUI.CHANNEL_WECUI + ":" + SUB_CHANNEL_WECUI), this);
+			
 			registered = true;
 		}
 	}
@@ -131,13 +149,8 @@ public class LiteModWorldEditCUI implements ModInitializer, PacketConsumer,  Cli
 
 	public void receiveMessage(String message, String channel) {
 		if (channel.trim().equalsIgnoreCase("minecraft")) {
-			System.out.println("recieved message from " + channel + ": '" + message.trim());
-			if (message.trim().equalsIgnoreCase("worldedit:cui")) {
-				System.out.println("register worldedit:cui");
+			//Register myself
 				register();
-			} else {
-				System.out.println("unknown message '" + message + "'");
-			}
 		}
 	}
 
@@ -151,6 +164,9 @@ public class LiteModWorldEditCUI implements ModInitializer, PacketConsumer,  Cli
 			if (readableBytes > 0) {
 				byte[] payload = new byte[readableBytes];
 				data.readBytes(payload);
+				System.out.println("got message from server channel = " + channel);
+				System.out.println("data = " + new String(payload, Charsets.UTF_8));
+				System.out.println("channel = " + channel);
 				this.channelListener.onMessage(new String(payload, Charsets.UTF_8));
 			} else {
 				this.controller.getDebugger().debug("Warning, invalid (zero length) payload received from server");
@@ -202,6 +218,10 @@ public class LiteModWorldEditCUI implements ModInitializer, PacketConsumer,  Cli
 			if (this.keyBindChunkBorder.isPressed()) {
 				this.controller.toggleChunkBorders();
 			}
+			if(this.keyBindConfig.isPressed()) {
+				System.out.println(MinecraftClient.getInstance().currentScreen);
+				MinecraftClient.getInstance().openScreen(new CUIConfigPanel());
+			}
 		}
 		
 		if (inGame && clock && this.controller != null) {
@@ -248,8 +268,8 @@ public class LiteModWorldEditCUI implements ModInitializer, PacketConsumer,  Cli
 	}
 
 	@Override
-	public void onInitialize() {
-		LiteModWorldEditCUI.instance = this;
+	public void onInitialize() {	
+		System.out.println("onInitialize");
 		MixinBootstrap.init();
 		Mixins.addConfiguration("mixins.wecui.json");
 		this.onInitCompleted();
@@ -263,7 +283,27 @@ public class LiteModWorldEditCUI implements ModInitializer, PacketConsumer,  Cli
 
 	public void onHudRender(float tickDelta, double cameraX, double cameraY, double cameraZ) {
 		if (this.visible && this.alwaysOnTop) {
+			if(this.worldRenderListener == null) {
+				System.out.println("no initalized yet, initalizing...");
+				onInitialize();
+			}
 			this.worldRenderListener.onRender(tickDelta,cameraX,cameraY,cameraZ);
 		}
+	}
+
+	@Override
+	public String getModId() {		
+		return this.getName();
+	}
+	@Override
+	public ConfigScreenFactory<Screen> getModConfigScreenFactory() {	
+		System.out.println("called getModConfigScreenFactory()");
+		
+		return new ConfigScreen();
+	}
+	@Override
+	public Map<String, ConfigScreenFactory<?>> getProvidedConfigScreenFactories() {
+		System.out.println("called getModConfigScreenFactory()");
+		return ImmutableMap.of("minecraft", parent -> new SettingsScreen(parent, MinecraftClient.getInstance().options));
 	}
 }

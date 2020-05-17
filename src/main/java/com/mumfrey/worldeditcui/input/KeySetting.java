@@ -15,21 +15,18 @@ public class KeySetting {
 		load();
 	}
 	
-	private void load(){
-		
+	private void load(){		
 		for(KeyBinding lbinding : MinecraftClient.getInstance().options.keysAll) {
-			if(lbinding.getDefaultKeyCode().getKeyCode() == key) {
-				
-				System.out.println("detected the same key as " + lbinding.getName() +  " ... using " + lbinding.getName()  + " as key");
-				binding =lbinding;
-				System.out.println("binding to key " + key);
-			}	
+			if(lbinding.getDefaultKeyCode().getKeyCode() == key) {				
+				System.out.println("detected the same key as " + lbinding.getName() +  " ... using " + lbinding.getName() + "/" + lbinding.getLocalizedName() + " as key");
+				binding = lbinding;
+				System.out.println("binding to key " + key + " (" + binding.getName() + "," + configname + ")");
+			}
 		}
 		if(binding == null) {
-			binding = new KeyBinding("zombe.mod." + configname ,key , "key.categories.zombe");
-			System.out.println("new binding to key " + key);
+			binding = new KeyBinding("wecui.mod." + configname ,key , "key.categories.wecui");
+			System.out.println("new binding to key " + key + " (" + binding.getName() + "," + configname + ")");
 		}
-		
 	}
 	public boolean isPressed(){
 		/*if(binding.isPressed()) {
@@ -59,10 +56,10 @@ public class KeySetting {
 		if(MinecraftClient.getInstance().options.keyJump.getDefaultKeyCode().getKeyCode() == key) {
 			System.out.println("detected the same key as jump ... using jump as key");
 			binding = MinecraftClient.getInstance().options.keyJump;
-			System.out.println("binding to new key " + key);
+			System.out.println("binding to new key " + key  + " (" + binding.getName() + "," + configname + ")");
 		}else {
-			binding = new KeyBinding("zombe.mod." + configname ,key , "key.categories.zombe");
-			System.out.println("binding to new key " + key);
+			binding = new KeyBinding("wecui.mod." + configname ,key , "key.categories.wecui");
+			System.out.println("binding to new key (" + binding.getName() + "," + configname + ")");
 		}	
 	}
 

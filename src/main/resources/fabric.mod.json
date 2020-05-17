@@ -13,6 +13,7 @@
     "homepage": "https://cultcraft.de",
     "sources": "https://github.com/1337Zero/WorldEditCUI"
   },
+  "icon": "assets/icon.png",
 
   "license": "CC0-1.0",
   
@@ -30,5 +31,8 @@
     "fabricloader": ">=0.7.2",
     "fabric": "*",
     "minecraft": "1.15.x"
+  },
+  "entrypoints": {
+      "modmenu": [ "com.mumfrey.worldeditcui.LiteModWorldEditCUI" ]
   }
 }
