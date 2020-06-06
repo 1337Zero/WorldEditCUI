@@ -130,4 +130,5 @@ public enum ConfiguredColour {
 				this.colour.blue() * 0.75F, this.colour.alpha() * 0.25F);
 		this.lines = new LineStyle[] { this.hidden, this.normal };
 	}
+	
 }

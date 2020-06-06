@@ -58,24 +58,17 @@ public class CUIConfigPanel extends Screen{
 		this.controlList.clear();
 		int nextId = 0;
 		for (ConfiguredColour colour : ConfiguredColour.values()) {
-			this.controlList.add(new GuiColourButton(this.mc, nextId, 24,CUIConfigPanel.CONTROL_TOP + nextId * CUIConfigPanel.CONTROL_SPACING, 40, 20, colour));
-			this.controlList.add(new GuiControl(
-				/*MC*/	this.mc, 
-				/*ID*/	CUIConfigPanel.COLOUR_OPTION_BASE_ID + nextId, 
-				/*X*/	234,
-				/*Y*/	CUIConfigPanel.CONTROL_TOP + nextId * CUIConfigPanel.CONTROL_SPACING, 
-				/*Width*/	60, 
-				/*Height*/	20, 
-					"Reset",(onpress)->{System.out.println("reset pressed");}));
-			this.controlList.add(new ButtonWidget(
-					/*X*/	234,
-					/*Y*/	CUIConfigPanel.CONTROL_TOP + nextId * CUIConfigPanel.CONTROL_SPACING, 
-					/*Width*/	60, 
-					/*Height*/	20, 
-						"Reset",(onpress)->{System.out.println("reset pressed");}));
+			GuiColourButton guicb = new GuiColourButton(this.mc, nextId, 24,CUIConfigPanel.CONTROL_TOP + nextId * CUIConfigPanel.CONTROL_SPACING, 40, 20, colour);
+			this.controlList.add(guicb);
+
+			this.controlList.add(new ButtonWidget(234,CUIConfigPanel.CONTROL_TOP + nextId * CUIConfigPanel.CONTROL_SPACING, 60, 20, "Reset",
+					(onpress)->{
+						colour.setColour(colour.getDefault());
+						guicb.updateColour(colour);
+					}));
 			nextId++;
-		}
-	
+			//break;
+		}	
 		
 		this.colourButtonsBottom = CUIConfigPanel.CONTROL_TOP + nextId * CUIConfigPanel.CONTROL_SPACING + CUIConfigPanel.EXTRA_CONTROLS_SPACING;
 		this.chkPromiscuous = new CheckboxWidget( 24, 26, 150, 20, config.getMessage_gui_options_compat_spammy(), config.isPromiscuous());
@@ -85,13 +78,33 @@ public class CUIConfigPanel extends Screen{
 		this.addButton(this.chkAlwaysOnTop);
 		this.chkClearAll = new CheckboxWidget(24,this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING,150, 20, config.getMessage_gui_options_extra_clearall(), config.isClearAllOnKey());
 		this.addButton(this.chkClearAll);
-		
 
 		for (AbstractPressableButtonWidget control : this.controlList) {
 			this.addButton(control);
 		}
-		GuiControl.setScreenSizeAndScale(MinecraftClient.getInstance().getWindow().getWidth(), this.getContentHeight(), (int)mc.getWindow().getScaleFactor());
 		
+		//add save button
+		this.addButton(new ButtonWidget(24, this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+50, 40,20, "save", (e)-> {			
+			for (AbstractPressableButtonWidget control : this.controlList) {
+				if(control instanceof GuiColourButton) {
+					GuiColourButton colourButton = (GuiColourButton)control;
+					colourButton.save();
+				}				
+			}			
+			
+			config.setPromiscuous(this.chkPromiscuous.isChecked());
+			config.setAlwaysOnTop(this.chkAlwaysOnTop.isChecked());
+			config.setClearAllOnKey(this.chkClearAll.isChecked());
+			
+			config.save();
+			MinecraftClient.getInstance().openScreen(null);
+		}));
+		//add cancel button
+		this.addButton(new ButtonWidget(70, this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+50, 40,20, "cancel", (e)-> {
+			MinecraftClient.getInstance().openScreen(null);
+		}));
+		
+		GuiControl.setScreenSizeAndScale(MinecraftClient.getInstance().getWindow().getWidth(), this.getContentHeight(), (int)mc.getWindow().getScaleFactor());
 	}
 	
 	@Override
@@ -108,6 +121,8 @@ public class CUIConfigPanel extends Screen{
 			button.render(mouseX, mouseY, partialTicks);
 			button.y = tempButtonY;
 		}
+		
+		//close all picker
 		
 		for(AbstractButtonWidget button : this.buttons) {
 			if(button instanceof GuiColourButton) {
@@ -142,38 +157,67 @@ public class CUIConfigPanel extends Screen{
 		return super.mouseDragged(mouseX, mouseY + offset, button, deltaX, deltaY);		
 	}
 	
-	double startDrag = 0;
+	
 	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button) {		
-		startDrag = mouseY;				
-		boolean makeActive = true;
-		for (AbstractPressableButtonWidget control : this.controlList) {
-			if (control.mouseClicked(mouseX, mouseY,button)) {
-				if (makeActive) {
-					makeActive = false;
-					this.actionPerformed(control);
-					return true;
+	public boolean mouseScrolled(double d, double e, double amount) {
+		boolean noscroll = false;
+		for(AbstractButtonWidget abutton : this.buttons) {
+			if(abutton instanceof GuiColourButton) {
+				if(((GuiColourButton)abutton).isPickerShown()) {
+					noscroll = true;
+					//break;
 				}
 			}
+			abutton.mouseScrolled(d,e,amount);
+		}
+		if(!noscroll) {
+			offset += (amount*10);
 		}
 		
-		return super.mouseClicked(mouseX, mouseY-offset, button);
+		//this.startDrag = mouseY;		
+		//return super.mouseDragged(mouseX, mouseY + offset, button, deltaX, deltaY);		
+		return super.mouseScrolled(d, e, amount);
 	}
+	
+	
 	private void actionPerformed(AbstractPressableButtonWidget control) {
-		
 		if (control instanceof CheckboxWidget) {
 			CheckboxWidget chk = (CheckboxWidget) control;
 			chk.onPress();
 		}		
 	}
+	
+	double startDrag = 0;
 	@Override
-	public boolean mouseReleased(double mouseX, double mouseY, int button) {
-		
-		for (AbstractButtonWidget buttonw: this.buttons) {
-			buttonw.mouseReleased(mouseX, mouseY, button);		
+	public boolean mouseClicked(double mouseX, double mouseY, int button) {	
+		startDrag = mouseY;				
+		boolean makeActive = true;
+		for (AbstractPressableButtonWidget control : this.controlList) {
+			int tempButtonY = control.y;
+			control.y += offset;		
+			if (control.mouseClicked(mouseX, mouseY,button)) {				
+				if (makeActive) {
+					makeActive = false;
+					this.actionPerformed(control);
+					control.y = tempButtonY;
+					return true;
+				}
+			}else if(control instanceof GuiColourButton) {
+				GuiColourButton guiC = (GuiColourButton) control;
+				guiC.closePicker(true);
+			}
+			control.y = tempButtonY;
 		}
-		
-		return super.mouseReleased(mouseX, mouseY, button);
+		return super.mouseClicked(mouseX, mouseY-offset, button);
+		//return false;
+	}
+	
+	@Override
+	public boolean mouseReleased(double mouseX, double mouseY, int button) {		
+		for (AbstractButtonWidget buttonw: this.buttons) {
+			buttonw.mouseReleased(mouseX, mouseY, button);	
+		}		
+		return super.mouseReleased(mouseX, mouseY-offset, button);
 	}
 	
 	

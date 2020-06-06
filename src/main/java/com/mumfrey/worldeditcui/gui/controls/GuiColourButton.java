@@ -68,7 +68,7 @@ public class GuiColourButton extends GuiControl {
 		}
 	}
 
-	public void drawPicker(MinecraftClient minecraft, int mouseX, int mouseY, float partialTicks) {
+	public void drawPicker(MinecraftClient minecraft, int mouseX, int mouseY, float partialTicks) {		
 		if (this.visible && this.picker != null) {
 			this.picker.render(mouseX, mouseY, partialTicks);
 			//this.picker.drawButton(minecraft, mouseX, mouseY, partialTicks);
@@ -85,8 +85,7 @@ public class GuiColourButton extends GuiControl {
 	 * 
 	 */
 	public void closePicker(boolean getColour) {
-		if (getColour)
-			this.colour = this.picker.getColour();
+		if (getColour && picker != null)this.colour = this.picker.getColour();
 		this.picker = null;
 		this.pickerClicked = false;
 	}
@@ -115,6 +114,7 @@ public class GuiColourButton extends GuiControl {
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY,int button) {
 		boolean pressed = super.mouseClicked(mouseX, mouseY, button);
+		if(pressed)System.out.println("mouseclicked " + this.lineColour);
 		if (this.picker == null) {
 			if (pressed) {
 				int xPos = Math.min(this.x + this.width, GuiControl.lastScreenWidth - 233);
@@ -127,7 +127,9 @@ public class GuiColourButton extends GuiControl {
 			return pressed;
 		}
 		this.pickerClicked = this.picker.mouseClicked(mouseX, mouseY,button);
-
+		
+		
+		
 		if (pressed && !this.pickerClicked) {
 			this.closePicker(true);
 		}

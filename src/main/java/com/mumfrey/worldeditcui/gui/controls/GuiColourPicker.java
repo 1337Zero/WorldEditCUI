@@ -264,6 +264,7 @@ public class GuiColourPicker extends GuiControl{
 	 */
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+				
 		if (super.mouseClicked(mouseX, mouseY, button)) {
 			if (this.btnOk.mouseClicked(mouseX, mouseY, button))
 				this.result = DialogResult.OK;

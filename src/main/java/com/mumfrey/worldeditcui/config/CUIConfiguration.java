@@ -96,13 +96,13 @@ public final class CUIConfiguration implements InitialisationFactory {
 	@Expose
 	private String message_gui_ok = "OK";
 	@Expose
-	private String message_colour_cuboidedge = "Cuboid Edge Colour";
+	private String message_colour_cuboidedge = "Cuboid Grid Colour";
 	@Expose
-	private String message_colour_cuboidgrid = "Cuboid Grid Colour";
+	private String message_colour_cuboidgrid = "Cuboid Edge Colour";
 	@Expose
-	private String message_colour_cuboidpoint1 = "Cuboid Second Point Colour";
+	private String message_colour_cuboidpoint1 = "Cuboid First Point Colour";
 	@Expose
-	private String message_colour_cuboidpoint2 = "Cuboid First Point Colour";
+	private String message_colour_cuboidpoint2 = "Cuboid Second Point Colour";
 	@Expose
 	private String message_colour_polygrid = "Polygon Grid Colour";
 	@Expose
