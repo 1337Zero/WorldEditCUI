@@ -1,6 +1,9 @@
 package com.mumfrey.worldeditcui.render.shapes;
 
 import com.mumfrey.worldeditcui.render.RenderStyle;
+
+import static org.lwjgl.opengl.GL11.*;
+
 import com.mumfrey.worldeditcui.render.LineStyle;
 import com.mumfrey.worldeditcui.util.BoundingBox;
 import com.mumfrey.worldeditcui.util.Observable;
@@ -50,6 +53,8 @@ public class Render3DBox extends RenderRegion {
 	@Override
 	public void render(Vector3 cameraPos) {
 
+		
+		
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buf = tessellator.getBuffer();
 		
@@ -71,7 +76,8 @@ public class Render3DBox extends RenderRegion {
 			
 
 			// Draw bottom face
-			buf.begin(0x2, VertexFormats.POSITION);
+			//buf.begin(0x2, VertexFormats.POSITION);
+			buf.begin(GL_LINE_LOOP, VertexFormats.POSITION);
 			line.applyColour();
 			buf.vertex(x1, y1, z1).next();
 			buf.vertex(x2, y1, z1).next();
@@ -80,7 +86,7 @@ public class Render3DBox extends RenderRegion {
 			tessellator.draw();
 
 			// Draw top face
-			buf.begin(0x2, VertexFormats.POSITION);
+			buf.begin(GL_LINE_LOOP, VertexFormats.POSITION);
 			line.applyColour();
 			buf.vertex(x1, y2, z1).next();
 			buf.vertex(x2, y2, z1).next();
@@ -89,7 +95,8 @@ public class Render3DBox extends RenderRegion {
 			tessellator.draw();
 
 			// Draw join top and bottom faces
-			buf.begin(0x1, VertexFormats.POSITION);
+			
+			buf.begin(GL_LINES, VertexFormats.POSITION);
 			line.applyColour();
 
 			buf.vertex(x1, y1, z1).next();

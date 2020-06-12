@@ -3,8 +3,6 @@ package com.mumfrey.worldeditcui.event;
 import com.google.common.base.Joiner;
 import com.mumfrey.worldeditcui.WorldEditCUI;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.math.Vec3d;
 
 /**
  * CUI communication event

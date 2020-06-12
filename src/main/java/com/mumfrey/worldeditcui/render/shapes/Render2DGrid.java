@@ -51,14 +51,10 @@ public class Render2DGrid extends RenderRegion {
 			for (PointRectangle point : this.points) {
 				if (point != null) {
 					Vector2 pos = point.getPoint();
-					
-					 //double x = pos.getX() - cameraPos.getX(); double z = pos.getY() -cameraPos.getZ(); buf.vertex(x + 0.5, height - cameraPos.getY(), z +0.5).next();
-					
-					//height -= (MinecraftClient.getInstance().player.getEyeY()-MinecraftClient.getInstance().player.getPos().y);
-
 					double x = pos.getX() - cameraPos.getX();
 					double z = pos.getY() - cameraPos.getZ();
-					buf.vertex(x + 0.5, height, z + 0.5).next();
+					double y = height - MinecraftClient.getInstance().player.getEyeHeight(MinecraftClient.getInstance().player.getPose());
+					buf.vertex(x + 0.5, y, z + 0.5).next();
 				}
 			}
 			tessellator.draw();

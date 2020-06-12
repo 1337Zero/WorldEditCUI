@@ -36,7 +36,6 @@ public class CUIEventDispatcher implements InitialisationFactory {
 	}
 
 	public void raiseEvent(CUIEventArgs eventArgs) {
-		System.out.println("raise event");
 		try {
 			Constructor<? extends CUIEvent> eventCtor = this.eventConstructors.get(eventArgs.getType());
 			if (eventCtor == null) {
@@ -50,7 +49,6 @@ public class CUIEventDispatcher implements InitialisationFactory {
 			String response = event.raise();
 			if (response != null) {
 				this.handleEventResponse(response);
-				System.out.println("handle response " + response);
 			} else {
 				System.out.println("resonse = null");
 			}

@@ -7,10 +7,13 @@ import com.mumfrey.worldeditcui.util.BoundingBox;
 import com.mumfrey.worldeditcui.util.Observable;
 import com.mumfrey.worldeditcui.util.Vector3;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
+
+import static org.lwjgl.opengl.GL11.*;
 
 /**
  * Draws the grid for a region between two corners in a cuboid region.
@@ -81,9 +84,9 @@ public class Render3DGrid extends RenderRegion {
 					x1, y1, z2, x2, y1, z2, x2, y2, z2, x1, y2, z2 // south
 			};
 
-			for (LineStyle line : this.style.getLines()) {
+			for (LineStyle line : this.style.getLines()) {				
 				if (line.prepare(this.style.getRenderType())) {
-					buf.begin(0x7, VertexFormats.POSITION);
+					buf.begin(GL_QUADS, VertexFormats.POSITION);
 					line.applyColour(0.25F);
 					for (int i = 0; i < vertices.length; i += 3) {
 						buf.vertex(vertices[i], vertices[i + 1], vertices[i + 2]).next();
@@ -106,43 +109,57 @@ public class Render3DGrid extends RenderRegion {
 				continue;
 			}
 
-			buf.begin(0x1, VertexFormats.POSITION);
+			buf.begin(GL_LINES, VertexFormats.POSITION);
 			line.applyColour();
 
+			//Block buttom
 			for (double y = Math.max(y1, -cullAt); y <= y2 && y <= cullAt; y += this.spacing) {
 				buf.vertex(x1, y, z2).next();
 				buf.vertex(x2, y, z2).next();
+				
 				buf.vertex(x1, y, z1).next();
 				buf.vertex(x2, y, z1).next();
+				
 				buf.vertex(x1, y, z1).next();
 				buf.vertex(x1, y, z2).next();
+				
 				buf.vertex(x2, y, z1).next();
 				buf.vertex(x2, y, z2).next();
 			}
-
+			//Block edge
 			for (double x = Math.max(x1, -cullAt); x <= x2 && x <= cullAt; x += this.spacing) {
 				buf.vertex(x, y1, z1).next();
 				buf.vertex(x, y2, z1).next();
+				
 				buf.vertex(x, y1, z2).next();
 				buf.vertex(x, y2, z2).next();
+				
 				buf.vertex(x, y2, z1).next();
 				buf.vertex(x, y2, z2).next();
+				
 				buf.vertex(x, y1, z1).next();
 				buf.vertex(x, y1, z2).next();
 			}
-
-			for (double z = Math.max(z1, -cullAt); z <= z2 && z <= cullAt; z += this.spacing) {
+					
+			
+			//Block front
+			//for (double z = Math.max(z1, -cullAt); z <= z2 && z <= cullAt; z += this.spacing) {
+			for (double z = Math.max(z1, -cullAt); z <= z2; z += this.spacing) {
 				buf.vertex(x1, y1, z).next();
 				buf.vertex(x2, y1, z).next();
+				
 				buf.vertex(x1, y2, z).next();
 				buf.vertex(x2, y2, z).next();
+				
 				buf.vertex(x2, y1, z).next();
 				buf.vertex(x2, y2, z).next();
+				
 				buf.vertex(x1, y1, z).next();
 				buf.vertex(x1, y2, z).next();
 			}
-
+			
 			tessellator.draw();
+			
 		}
 	}
 }

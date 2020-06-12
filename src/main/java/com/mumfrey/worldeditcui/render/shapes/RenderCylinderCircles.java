@@ -34,7 +34,7 @@ public class RenderCylinderCircles extends RenderRegion {
 	}
 
 	@Override
-	public void render(Vector3 cameraPos) {
+	public void render(Vector3 cameraPos) {		
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buf = tessellator.getBuffer();
 

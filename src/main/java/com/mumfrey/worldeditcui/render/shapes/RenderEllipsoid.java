@@ -35,7 +35,6 @@ public class RenderEllipsoid extends RenderRegion {
 
 	@Override
 	public void render(Vector3 cameraPos) {
-		
 		GlStateManager.pushMatrix();
 		GlStateManager.translated(this.centreX - cameraPos.getX(), this.centreY - cameraPos.getY(), this.centreZ - cameraPos.getZ());
 

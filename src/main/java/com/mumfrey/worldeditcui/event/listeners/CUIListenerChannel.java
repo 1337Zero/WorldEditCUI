@@ -10,31 +10,25 @@ import com.mumfrey.worldeditcui.event.CUIEventArgs;
  * @author yetanotherx
  * @author Adam Mummery-Smith
  */
-public class CUIListenerChannel
-{
+public class CUIListenerChannel {
 	private WorldEditCUI controller;
-	
-	public CUIListenerChannel(WorldEditCUI controller)
-	{
+
+	public CUIListenerChannel(WorldEditCUI controller) {
 		this.controller = controller;
 	}
-	
-	public void onMessage(String message)
-	{
+
+	public void onMessage(String message) {
 		String[] split = message.split("\\|", -1);
 		boolean multi = split[0].startsWith("+");
 		String type = split[0].substring(multi ? 1 : 0);
 		String args = message.substring(type.length() + (multi ? 2 : 1));
-		
+
 		this.controller.getDebugger().debug("Received CUI event from server: " + message);
-		
-		try
-		{
+
+		try {
 			CUIEventArgs eventArgs = new CUIEventArgs(this.controller, multi, type, args.split("\\|", -1));
 			this.controller.getDispatcher().raiseEvent(eventArgs);
-		}
-		catch (Exception ex)
-		{
+		} catch (Exception ex) {
 //			ex.printStackTrace();
 		}
 	}
