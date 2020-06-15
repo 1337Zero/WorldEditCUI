@@ -140,6 +140,17 @@ public final class CUIConfiguration implements InitialisationFactory {
 	@Expose
 	private String message_gui_options_save_reminder = "Dont forget to save your changes!";
 	
+	
+	@Expose
+	private String message_activated_allways_on_top = "Always on top: active";
+	@Expose
+	private String message_deactivated_allways_on_top = "Always on top: deactivated";
+	@Expose
+	private String message_activated_chunk_borders = "Chunk Borders: active";
+	@Expose
+	private String message_deactivated_chunk_borders = "Chunk Borders: deactivated";
+	
+	
 	public static CUIConfiguration instance;
 	
 
@@ -437,5 +448,21 @@ public final class CUIConfiguration implements InitialisationFactory {
 
 	public String getMessage_gui_options_save_reminder() {
 		return message_gui_options_save_reminder;
+	}
+
+	public String getMessage_activated_allways_on_top() {
+		return message_activated_allways_on_top;
+	}
+
+	public String getMessage_deactivated_allways_on_top() {
+		return message_deactivated_allways_on_top;
+	}
+
+	public String getMessage_activated_chunk_borders() {
+		return message_activated_chunk_borders;
+	}
+
+	public String getMessage_deactivated_chunk_borders() {
+		return message_deactivated_chunk_borders;
 	}
 }

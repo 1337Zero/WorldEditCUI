@@ -81,10 +81,10 @@ public class CUIConfigPanel extends Screen{
 		this.addButton(this.chkClearAll);
 
 		controlList.add(new GuiChooseKeyButton(24, 24, this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+50, 150, 20, "Hotkey: Chunk", config.getKey_chunk(), "".split(";"),"chunk"));
-		controlList.add(new GuiChooseKeyButton(24, 200, this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+50, 150, 20, "Hotkey: Clear", config.getKey_chunk(), "".split(";"),"clear"));
-		controlList.add(new GuiChooseKeyButton(24, 24, this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+80, 150, 20, "Hotkey: Lshift", config.getKey_chunk(), "".split(";"),"lshift"));
-		controlList.add(new GuiChooseKeyButton(24, 200, this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+80, 150, 20, "Hotkey: Rshift", config.getKey_chunk(), "".split(";"),"rshift"));
-		controlList.add(new GuiChooseKeyButton(24, 24, this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+110, 150, 20, "Hotkey: Toggle", config.getKey_chunk(), "".split(";"),"toggle"));
+		controlList.add(new GuiChooseKeyButton(24, 200, this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+50, 150, 20, "Hotkey: Clear", config.getKey_clear(), "".split(";"),"clear"));
+		controlList.add(new GuiChooseKeyButton(24, 24, this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+80, 150, 20, "Hotkey: Lshift", config.getKey_lshift(), "".split(";"),"lshift"));
+		controlList.add(new GuiChooseKeyButton(24, 200, this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+80, 150, 20, "Hotkey: Rshift", config.getKey_rshift(), "".split(";"),"rshift"));
+		controlList.add(new GuiChooseKeyButton(24, 24, this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+110, 150, 20, "Hotkey: Toggle", config.getKey_toggle(), "".split(";"),"toggle"));
 		
 		
 		

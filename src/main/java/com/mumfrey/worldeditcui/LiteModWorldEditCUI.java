@@ -24,6 +24,7 @@ import org.spongepowered.asm.mixin.Mixins;
 
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
 import net.fabricmc.api.ModInitializer;
@@ -200,6 +201,11 @@ public class LiteModWorldEditCUI implements ModInitializer, PacketConsumer,  Cli
 			if (this.keyBindToggleUI.isPressed()) {
 				if (keyBindLShift.isKeyDown() || keyBindRShift.isKeyDown()) {
 					config.setAlwaysOnTop(!config.isAlwaysOnTop());
+					if(config.isAlwaysOnTop()) {
+						MinecraftClient.getInstance().player.sendMessage(new LiteralText(config.getMessage_activated_allways_on_top()));
+					}else {
+						MinecraftClient.getInstance().player.sendMessage(new LiteralText(config.getMessage_deactivated_allways_on_top()));
+					}					
 				} else {
 					this.visible = !this.visible;
 				}
@@ -216,10 +222,14 @@ public class LiteModWorldEditCUI implements ModInitializer, PacketConsumer,  Cli
 			}
 
 			if (this.keyBindChunkBorder.isPressed()) {
-				this.controller.toggleChunkBorders();
+				this.controller.toggleChunkBorders();				
+				if(this.controller.chunkBorders) {
+					MinecraftClient.getInstance().player.sendMessage(new LiteralText(config.getMessage_activated_chunk_borders()));
+				}else {
+					MinecraftClient.getInstance().player.sendMessage(new LiteralText(config.getMessage_deactivated_chunk_borders()));
+				}
 			}
 			if(this.keyBindConfig.isPressed()) {
-				System.out.println(MinecraftClient.getInstance().currentScreen);
 				MinecraftClient.getInstance().openScreen(new CUIConfigPanel());
 			}
 		}

@@ -37,7 +37,7 @@ public class WorldEditCUI {
 	private CUIEventDispatcher dispatcher;
 	private CUISelectionProvider selectionProvider;
 	private RenderChunkBoundary chunkBorderRenderer;
-	private boolean chunkBorders;
+	public boolean chunkBorders;
 
 	public void initialise(MinecraftClient minecraft) {
 		this.selection = new CuboidRegion(this);

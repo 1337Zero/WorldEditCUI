@@ -93,6 +93,7 @@ public class GuiChooseKeyButton extends ButtonWidget{
 	
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {		
+		if(!waiting)return false;
 		this.waiting = false;
 		this.buttonkey = keyCode;
 		this.setMessage(buttonname + ": " + makeBetterReadable(buttonkey));		
