@@ -8,40 +8,37 @@ public class KeySetting {
 	private int key;
 	private String configname;
 	private KeyBinding binding;
+	
+	private long lastPressed;
 		
 	public KeySetting(int key,String configname){
 		this.configname = configname;
 		this.key = key;		
 		load();
+		lastPressed = System.currentTimeMillis();
 	}
 	
 	private void load(){		
 		for(KeyBinding lbinding : MinecraftClient.getInstance().options.keysAll) {
 			if(lbinding.getDefaultKeyCode().getKeyCode() == key) {				
-				System.out.println("detected the same key as " + lbinding.getName() +  " ... using " + lbinding.getName() + "/" + lbinding.getLocalizedName() + " as key");
 				binding = lbinding;
-				System.out.println("binding to key " + key + " (" + binding.getName() + "," + configname + ")");
 			}
 		}
 		if(binding == null) {
 			binding = new KeyBinding("wecui.mod." + configname ,key , "key.categories.wecui");
-			System.out.println("new binding to key " + key + " (" + binding.getName() + "," + configname + ")");
 		}
 	}
 	public boolean isPressed(){
-		/*if(binding.isPressed()) {
-			System.out.println("key (" + configname + " is isPressed");
-		}*/
-		return binding.isPressed();
+		if(binding.isPressed() && System.currentTimeMillis() - lastPressed > 250) {
+			lastPressed = System.currentTimeMillis();
+			return binding.isPressed();
+		}
+		return false;
 	}
-	public boolean isKeyDown(){
-		/*if(binding.isKeyDown()) {
-			System.out.println("key (" + configname + " is down");
-		}*/
+	public boolean isKeyDown(){		
 		return binding.isPressed();
 	}
 	public void replaceKey(String configname,int key){
-		//LiteModMain.config.replaceData(configname, key + "");
 		System.out.println("Replacing Keys not implemented yet!");
 	}
 
@@ -52,14 +49,10 @@ public class KeySetting {
 	public void setKey(int key) {
 		this.key = key;
 		replaceKey(configname, key);
-		//binding.func_197984_a(key);
 		if(MinecraftClient.getInstance().options.keyJump.getDefaultKeyCode().getKeyCode() == key) {
-			System.out.println("detected the same key as jump ... using jump as key");
 			binding = MinecraftClient.getInstance().options.keyJump;
-			System.out.println("binding to new key " + key  + " (" + binding.getName() + "," + configname + ")");
 		}else {
 			binding = new KeyBinding("wecui.mod." + configname ,key , "key.categories.wecui");
-			System.out.println("binding to new key (" + binding.getName() + "," + configname + ")");
 		}	
 	}
 

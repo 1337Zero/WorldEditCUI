@@ -135,6 +135,10 @@ public final class CUIConfiguration implements InitialisationFactory {
 	private String message_gui_options_extra_title = "Advanced Options";
 	@Expose
 	private String message_gui_options_extra_clearall = "Clear displayed regions when <§aClear§r> is pressed";
+	@Expose
+	private String message_gui_options_extra_key_select = "Change your keys here";
+	@Expose
+	private String message_gui_options_save_reminder = "Dont forget to save your changes!";
 	
 	public static CUIConfiguration instance;
 	
@@ -425,5 +429,13 @@ public final class CUIConfiguration implements InitialisationFactory {
 			case "colour.chunkgrid": return getMessage_colour_chunkgrid();
 		}
 		return key;
+	}
+
+	public String getMessage_gui_options_extra_key_select() {
+		return message_gui_options_extra_key_select;
+	}
+
+	public String getMessage_gui_options_save_reminder() {
+		return message_gui_options_save_reminder;
 	}
 }

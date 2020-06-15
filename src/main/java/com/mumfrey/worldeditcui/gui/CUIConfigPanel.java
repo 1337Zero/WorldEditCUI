@@ -15,6 +15,7 @@ import net.minecraft.client.util.NarratorManager;
 
 import com.mumfrey.worldeditcui.LiteModWorldEditCUI;
 import com.mumfrey.worldeditcui.config.CUIConfiguration;
+import com.mumfrey.worldeditcui.gui.controls.GuiChooseKeyButton;
 import com.mumfrey.worldeditcui.gui.controls.GuiColourButton;
 import com.mumfrey.worldeditcui.gui.controls.GuiControl;
 import com.mumfrey.worldeditcui.render.ConfiguredColour;
@@ -79,12 +80,22 @@ public class CUIConfigPanel extends Screen{
 		this.chkClearAll = new CheckboxWidget(24,this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING,150, 20, config.getMessage_gui_options_extra_clearall(), config.isClearAllOnKey());
 		this.addButton(this.chkClearAll);
 
+		controlList.add(new GuiChooseKeyButton(24, 24, this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+50, 150, 20, "Hotkey: Chunk", config.getKey_chunk(), "".split(";"),"chunk"));
+		controlList.add(new GuiChooseKeyButton(24, 200, this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+50, 150, 20, "Hotkey: Clear", config.getKey_chunk(), "".split(";"),"clear"));
+		controlList.add(new GuiChooseKeyButton(24, 24, this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+80, 150, 20, "Hotkey: Lshift", config.getKey_chunk(), "".split(";"),"lshift"));
+		controlList.add(new GuiChooseKeyButton(24, 200, this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+80, 150, 20, "Hotkey: Rshift", config.getKey_chunk(), "".split(";"),"rshift"));
+		controlList.add(new GuiChooseKeyButton(24, 24, this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+110, 150, 20, "Hotkey: Toggle", config.getKey_chunk(), "".split(";"),"toggle"));
+		
+		
+		
 		for (AbstractPressableButtonWidget control : this.controlList) {
 			this.addButton(control);
 		}
 		
+				
+		
 		//add save button
-		this.addButton(new ButtonWidget(24, this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+50, 40,20, "save", (e)-> {			
+		this.addButton(new ButtonWidget(150, this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+170, 40,20, "save", (e)-> {			
 			for (AbstractPressableButtonWidget control : this.controlList) {
 				if(control instanceof GuiColourButton) {
 					GuiColourButton colourButton = (GuiColourButton)control;
@@ -100,7 +111,7 @@ public class CUIConfigPanel extends Screen{
 			MinecraftClient.getInstance().openScreen(null);
 		}));
 		//add cancel button
-		this.addButton(new ButtonWidget(70, this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+50, 40,20, "cancel", (e)-> {
+		this.addButton(new ButtonWidget(200, this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+170, 40,20, "cancel", (e)-> {
 			MinecraftClient.getInstance().openScreen(null);
 		}));
 		
@@ -114,7 +125,9 @@ public class CUIConfigPanel extends Screen{
 		this.drawString(this.mc.textRenderer, LiteModWorldEditCUI.instance.getController().getConfiguration().getMessage_gui_options_compat_title(), 10,CUIConfigPanel.CONTROLS_PADDING+(int)offset, 0xFFFFFF55);
 		this.drawString(this.mc.textRenderer, LiteModWorldEditCUI.instance.getController().getConfiguration().getMessage_gui_options_colours_title(), 10, 64+(int)offset, 0xFFFFFF55);
 		this.drawString(this.mc.textRenderer, LiteModWorldEditCUI.instance.getController().getConfiguration().getMessage_gui_options_extra_title(), 10, this.colourButtonsBottom+(int)offset,0xFFFFFF55);
-
+		this.drawString(this.mc.textRenderer, LiteModWorldEditCUI.instance.getController().getConfiguration().getMessage_gui_options_extra_key_select(), 10,  this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+30+(int)offset,0xFFFFFF55);
+		this.drawString(this.mc.textRenderer, LiteModWorldEditCUI.instance.getController().getConfiguration().getMessage_gui_options_save_reminder(), 100,  this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+150+(int)offset,0xFFFFFF55);
+		
 		for(AbstractButtonWidget button : this.buttons) {
 			int tempButtonY = button.y;
 			button.y += offset;
@@ -232,7 +245,9 @@ public class CUIConfigPanel extends Screen{
 		for (AbstractButtonWidget button: this.buttons) {
 			if(button instanceof GuiColourButton) {
 				((GuiColourButton)button).keyPressed(keyChar, keyCode,modifiers);
-			}			
+			}else if(button instanceof GuiChooseKeyButton) {
+				((GuiChooseKeyButton)button).keyPressed(keyChar, keyCode,modifiers);
+			}
 		}
 		return true;
 	}
