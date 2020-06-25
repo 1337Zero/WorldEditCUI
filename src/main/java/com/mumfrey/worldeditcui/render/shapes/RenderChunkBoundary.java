@@ -1,9 +1,10 @@
 package com.mumfrey.worldeditcui.render.shapes;
 
+import net.fabricmc.fabric.api.dimension.v1.EntityPlacer;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Heightmap.Type;
@@ -32,35 +33,24 @@ public class RenderChunkBoundary extends RenderRegion {
 		double yMax = this.mc.world != null ? this.mc.world.getHeight() : 256.0;
 		double yMin = 0.0;
 
-		long xBlock = MathHelper.floor(cameraPos.getX());
-		long zBlock = MathHelper.floor(cameraPos.getZ());
-
-		int xChunk = (int) (xBlock >> 4);
-		int zChunk = (int) (zBlock >> 4);
-
-		// double xBase = 0 - (xBlock - (xChunk * 16)) - (cameraPos.getX() - xBlock);
-		// double zBase = (0 - (zBlock - (zChunk * 16)) - (cameraPos.getZ() - zBlock)) +
-		// 16;
-
-		double xBase = 0 - (xBlock - (xChunk * 16)) - (cameraPos.getX() - xBlock);
-		double zBase = (0 - (zBlock - (zChunk * 16)) - (cameraPos.getZ() - zBlock)) + 16;
-
-		this.grid.setPosition(new Vector3(xBase, yMin, zBase - 16), new Vector3(xBase + 16, yMax, zBase));
-
-		// glPushMatrix();
+		ClientPlayerEntity player = MinecraftClient.getInstance().player;
+		
+		Chunk ch = player.getEntityWorld().getChunk(player.getBlockPos());
+		
+		this.grid.setPosition(new Vector3(ch.getPos().getStartX(), yMin, ch.getPos().getStartZ()), new Vector3(ch.getPos().getEndX()+1, yMax, ch.getPos().getEndZ()+1));
+		
 		GlStateManager.pushMatrix();
-		// glTranslated(0.0, -cameraPos.getY(), 0.0);
-		 GlStateManager.translated(0.0, -cameraPos.getY(), 0.0);
-		// GlStateManager.translatef(0.0, -cameraPos.getY(), 0.0);
-
+		
+		
 		this.grid.render(Vector3.ZERO);
+		
+		
+		//this.renderChunkBorder(yMin, yMax, ch.getPos().getEndX(), ch.getPos().getEndZ());
 
-		this.renderChunkBorder(yMin, yMax, xBase, zBase);
-
+		
 		if (this.mc.world != null) {
-			this.renderChunkBoundary(xChunk, zChunk, xBase, zBase);
+			//this.renderChunkBoundary(xChunk, zChunk, xBase, zBase);
 		}
-
 		// glPopMatrix();
 		GlStateManager.popMatrix();
 	}
@@ -68,15 +58,15 @@ public class RenderChunkBoundary extends RenderRegion {
 	private void renderChunkBorder(double yMin, double yMax, double xBase, double zBase) {
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buf = tessellator.getBuffer();
-
 		int spacing = 16;
-
 		for (LineStyle line : this.style.getLines()) {
 			if (line.prepare(this.style.getRenderType())) {
 				buf.begin(0x1, VertexFormats.POSITION);
 				line.applyColour();
-
+				//for (int x = -16; x <= 32; x += spacing) {
+				//3 mal ?
 				for (int x = -16; x <= 32; x += spacing) {
+					//3 mal ?
 					for (int z = -16; z <= 32; z += spacing) {
 						// buf.vertex(xBase + x, yMin, zBase - z);
 						buf.vertex(xBase + x, yMin, zBase - z).next();
@@ -86,8 +76,7 @@ public class RenderChunkBoundary extends RenderRegion {
 						// buf.end(); ? needed
 					}
 				}
-
-				for (double y = yMin; y <= yMax; y += yMax) {
+			/*	for (double y = yMin; y <= yMax; y += yMax) {
 					buf.vertex(xBase, y, zBase).next();
 					buf.vertex(xBase, y, zBase - 16).next();
 					buf.vertex(xBase, y, zBase - 16).next();
@@ -96,8 +85,7 @@ public class RenderChunkBoundary extends RenderRegion {
 					buf.vertex(xBase + 16, y, zBase).next();
 					buf.vertex(xBase + 16, y, zBase).next();
 					buf.vertex(xBase, y, zBase).next();
-				}
-
+				}*/
 				tessellator.draw();
 			}
 		}
