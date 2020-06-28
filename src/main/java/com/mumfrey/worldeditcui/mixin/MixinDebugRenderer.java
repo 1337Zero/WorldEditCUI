@@ -17,6 +17,8 @@ import net.minecraft.client.util.math.MatrixStack;
 public class MixinDebugRenderer {	
 	@Inject(method = "render", at = @At("HEAD"), cancellable = false)
 	private void debugRenderer(MatrixStack metrics, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ, CallbackInfo ci) {
-		LiteModWorldEditCUI.instance.onHudRender(MinecraftClient.getInstance().getTickDelta(),cameraX,cameraY,cameraZ);
+		if(LiteModWorldEditCUI.instance != null) {
+			LiteModWorldEditCUI.instance.onHudRender(MinecraftClient.getInstance().getTickDelta(),cameraX,cameraY,cameraZ);
+		}		
 	}
 }

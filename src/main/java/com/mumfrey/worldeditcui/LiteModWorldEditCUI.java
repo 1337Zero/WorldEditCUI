@@ -1,7 +1,6 @@
 package com.mumfrey.worldeditcui;
 
-import io.github.prospector.modmenu.api.ConfigScreenFactory;
-import io.github.prospector.modmenu.api.ModMenuApi;
+
 
 import io.netty.buffer.Unpooled;
 
@@ -34,14 +33,10 @@ import net.fabricmc.fabric.api.network.PacketConsumer;
 import net.fabricmc.fabric.api.network.PacketContext;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.SettingsScreen;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.mumfrey.worldeditcui.config.CUIConfiguration;
-import com.mumfrey.worldeditcui.config.ConfigScreen;
 import com.mumfrey.worldeditcui.event.listeners.CUIListenerChannel;
 import com.mumfrey.worldeditcui.event.listeners.CUIListenerWorldRender;
 import com.mumfrey.worldeditcui.gui.CUIConfigPanel;
@@ -54,7 +49,7 @@ import com.mumfrey.worldeditcui.input.KeySetting;
  * @author Julius Schoenhut (1337Zero)
  */
 
-public class LiteModWorldEditCUI implements ModInitializer, PacketConsumer,  ClientTickCallback, ModMenuApi {
+public class LiteModWorldEditCUI implements ModInitializer, PacketConsumer,  ClientTickCallback {
 
 	public static String path = "";
 
@@ -265,7 +260,7 @@ public class LiteModWorldEditCUI implements ModInitializer, PacketConsumer,  Cli
 		}
 	}
 
-	public String getName() {
+	public static String getName() {
 		return "WorldEditCUI - Fabric";
 	}
 
@@ -300,20 +295,5 @@ public class LiteModWorldEditCUI implements ModInitializer, PacketConsumer,  Cli
 			this.worldRenderListener.onRender(tickDelta,cameraX,cameraY,cameraZ);
 		}
 	}
-
-	@Override
-	public String getModId() {		
-		return this.getName();
-	}
-	@Override
-	public ConfigScreenFactory<Screen> getModConfigScreenFactory() {	
-		System.out.println("called getModConfigScreenFactory()");
-		
-		return new ConfigScreen();
-	}
-	@Override
-	public Map<String, ConfigScreenFactory<?>> getProvidedConfigScreenFactories() {
-		System.out.println("called getModConfigScreenFactory()");
-		return ImmutableMap.of("minecraft", parent -> new SettingsScreen(parent, MinecraftClient.getInstance().options));
-	}
+	
 }

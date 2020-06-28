@@ -31,8 +31,9 @@ public class MixinCustomPayLoadHandler {
 			if (readableBytes > 0) {
 				byte[] payload = new byte[readableBytes];
 				data.readBytes(payload);
-				System.out.println(LiteModWorldEditCUI.instance);
-				LiteModWorldEditCUI.instance.receiveMessage(new String(payload, Charsets.UTF_8), channel);
+				if(LiteModWorldEditCUI.instance != null) {
+					LiteModWorldEditCUI.instance.receiveMessage(new String(payload, Charsets.UTF_8), channel);					
+				}
 			} else {
 				System.out.println("Warning, invalid (zero length) payload received from server");
 			}

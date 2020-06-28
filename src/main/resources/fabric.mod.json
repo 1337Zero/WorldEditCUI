@@ -21,7 +21,8 @@
   "entrypoints": {
     "main": [
       "com.mumfrey.worldeditcui.LiteModWorldEditCUI"
-    ]
+    ],
+    "modmenu": [ "com.mumfrey.worldeditcui.ModMenuProvider" ]
   },
   "mixins": [
     "mixins.wecui.json"
@@ -31,8 +32,5 @@
     "fabricloader": ">=0.7.2",
     "fabric": "*",
     "minecraft": "1.15.x"
-  },
-  "entrypoints": {
-      "modmenu": [ "com.mumfrey.worldeditcui.LiteModWorldEditCUI" ]
   }
 }
