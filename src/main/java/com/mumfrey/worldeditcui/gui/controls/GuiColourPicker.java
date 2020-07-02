@@ -6,6 +6,8 @@ import java.awt.Rectangle;
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mumfrey.worldeditcui.LiteModWorldEditCUI;
+import com.mumfrey.worldeditcui.config.CUIConfiguration;
 import com.mumfrey.worldeditcui.render.RenderHelper;
 
 import net.minecraft.client.MinecraftClient;
@@ -13,6 +15,8 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.resource.language.I18n;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 
 
@@ -81,6 +85,7 @@ public class GuiColourPicker extends GuiControl{
 	public GuiColourPicker(MinecraftClient minecraft, int controlId, int xPos, int yPos, int initialColour,String displayText) {
 		super(minecraft, controlId, xPos, yPos, 231, 173, displayText, (onpress)->{System.out.println("GuiColourPicker Pressed");});
 
+		CUIConfiguration config = LiteModWorldEditCUI.instance.getController().getConfiguration();
 		Color colour = new Color(initialColour);
 		this.hsb = Color.RGBtoHSB(colour.getRed(), colour.getGreen(), colour.getBlue(), null);
 		this.opacity = initialColour & 0xFF000000;
@@ -89,10 +94,10 @@ public class GuiColourPicker extends GuiControl{
 
 		this.fontRenderer = minecraft.textRenderer;
 		//new TextFieldWidget(textrenderer,x,y,width,message)
-		this.txtRed = new TextFieldWidget(this.fontRenderer, this.x + 188, this.y + 10, 32, 16, "red");
-		this.txtGreen = new TextFieldWidget(this.fontRenderer, this.x + 188, this.y + 30, 32, 16, "green");
-		this.txtBlue = new TextFieldWidget(this.fontRenderer, this.x + 188, this.y + 50, 32, 16, "blue");
-		this.txtAlpha = new TextFieldWidget(this.fontRenderer, this.x + 188, this.y + 70, 32, 16, "alpha");
+		this.txtRed = new TextFieldWidget(this.fontRenderer, this.x + 188, this.y + 10, 32, 16, new LiteralText("red"));
+		this.txtGreen = new TextFieldWidget(this.fontRenderer, this.x + 188, this.y + 30, 32, 16, new LiteralText("green"));
+		this.txtBlue = new TextFieldWidget(this.fontRenderer, this.x + 188, this.y + 50, 32, 16, new LiteralText("blue"));
+		this.txtAlpha = new TextFieldWidget(this.fontRenderer, this.x + 188, this.y + 70, 32, 16, new LiteralText("alpha"));
 		
 		this.txtRed.setMaxLength(3);
 		this.txtGreen.setMaxLength(3);
@@ -104,9 +109,9 @@ public class GuiColourPicker extends GuiControl{
 		this.rectAArea = new Rectangle(this.x + 163, this.y + 10, 15, 128);
 
 		//this.btnOk = new GuiControl(minecraft, 0, this.x + 9, this.y + 145, 55, 20, I18n.translate("gui.ok"),(onpress)-> {System.out.println("ok pressed");});
-		this.btnOk = new ButtonWidget(this.x + 9, this.y + 145, 55, 20, I18n.translate("gui.ok"),(onpress)-> {System.out.println("ok pressed");});
+		this.btnOk = new ButtonWidget(this.x + 9, this.y + 145, 55, 20, new LiteralText(config.getMessage_gui_ok()),(onpress)-> {System.out.println("ok pressed");});
 		//this.btnCancel = new GuiControl(minecraft, 1, this.x + 70, this.y + 145, 65, 20, I18n.translate("gui.cancel"),(onpress)-> {System.out.println("ok pressed");});
-		this.btnCancel = new ButtonWidget(this.x + 70, this.y + 145, 65, 20, I18n.translate("gui.cancel"),(onpress)-> {System.out.println("ok pressed");});
+		this.btnCancel = new ButtonWidget(this.x + 70, this.y + 145, 65, 20, new LiteralText(config.getMessage_gui_cancel()),(onpress)-> {System.out.println("ok pressed");});
 		
 		
 		
@@ -124,7 +129,7 @@ public class GuiColourPicker extends GuiControl{
 	}
 	
 	@Override
-	public void renderButton(int mouseX, int mouseY, float partialTicks) {
+	public void renderButton(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
 		//this.mouseDragged(minecraft, mouseX, mouseY);
 		
 		// Calculate coordinates for the selectors
@@ -151,12 +156,12 @@ public class GuiColourPicker extends GuiControl{
 
 		// Draw brightness bar
 		RenderHelper.drawGradientRect(this.x + 143, this.y + 10, this.x + 158, this.y + 138, brightness, 0xFF000000);
-		this.drawRotText(this.fontRenderer, "Luminosity", this.x + 150, this.y + 74, 0xFF000000, false);
+		this.drawRotText(matrix, this.fontRenderer, "Luminosity", this.x + 150, this.y + 74, 0xFF000000, false);
 		RenderHelper.drawRect(this.x + 142, bPos - 1, this.x + 159, bPos + 1, 0xFFFFFFFF);
 
 		// Draw opacity bar
 		RenderHelper.drawGradientRect(this.x + 163, this.y + 10, this.x + 178, this.y + 138, 0xFFFFFFFF, 0xFF000000);
-		this.drawRotText(this.fontRenderer, "Opacity", this.x + 170, this.y + 74, 0xFF000000, false);
+		this.drawRotText(matrix, this.fontRenderer, "Opacity", this.x + 170, this.y + 74, 0xFF000000, false);
 		RenderHelper.drawRect(this.x + 162, aPos - 1, this.x + 179, aPos + 1, 0xFFFFFFFF);
 
 		// Draw preview
@@ -168,18 +173,18 @@ public class GuiColourPicker extends GuiControl{
 
 		
 		// Draw text boxes
-		this.txtRed.render(this.txtRed.x, this.txtRed.y, MinecraftClient.getInstance().getTickDelta());
+		this.txtRed.render(matrix,this.txtRed.x, this.txtRed.y, MinecraftClient.getInstance().getTickDelta());
 		//this.txtRed.drawTextBox();
-		this.txtGreen.render(this.txtGreen.x, this.txtGreen.y, MinecraftClient.getInstance().getTickDelta());
+		this.txtGreen.render(matrix, this.txtGreen.x, this.txtGreen.y, MinecraftClient.getInstance().getTickDelta());
 		//this.txtGreen.drawTextBox();
-		this.txtBlue.render(this.txtBlue.x, this.txtBlue.y, MinecraftClient.getInstance().getTickDelta());
+		this.txtBlue.render(matrix, this.txtBlue.x, this.txtBlue.y, MinecraftClient.getInstance().getTickDelta());
 		//this.txtBlue.drawTextBox();
-		this.txtAlpha.render(this.txtAlpha.x, this.txtAlpha.y, MinecraftClient.getInstance().getTickDelta());
+		this.txtAlpha.render(matrix, this.txtAlpha.x, this.txtAlpha.y, MinecraftClient.getInstance().getTickDelta());
 		//this.txtAlpha.drawTextBox();
 		
-		this.btnOk.renderButton(btnOk.x, btnOk.y, MinecraftClient.getInstance().getTickDelta());		
+		this.btnOk.renderButton(matrix, btnOk.x, btnOk.y, MinecraftClient.getInstance().getTickDelta());		
 		//this.btnOk.drawButton(minecraft, mouseX, mouseY, partialTicks);
-		this.btnCancel.renderButton(btnCancel.x, btnCancel.y, MinecraftClient.getInstance().getTickDelta());	
+		this.btnCancel.renderButton(matrix, btnCancel.x, btnCancel.y, MinecraftClient.getInstance().getTickDelta());	
 		//this.btnCancel.drawButton(minecraft, mouseX, mouseY, partialTicks);
 	}
 

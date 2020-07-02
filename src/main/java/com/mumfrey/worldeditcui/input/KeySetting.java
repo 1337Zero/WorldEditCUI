@@ -20,7 +20,7 @@ public class KeySetting {
 	
 	private void load(){		
 		for(KeyBinding lbinding : MinecraftClient.getInstance().options.keysAll) {
-			if(lbinding.getDefaultKeyCode().getKeyCode() == key) {				
+			if(lbinding.getDefaultKey().getCode() == key) {				
 				binding = lbinding;
 			}
 		}
@@ -49,7 +49,7 @@ public class KeySetting {
 	public void setKey(int key) {
 		this.key = key;
 		replaceKey(configname, key);
-		if(MinecraftClient.getInstance().options.keyJump.getDefaultKeyCode().getKeyCode() == key) {
+		if(MinecraftClient.getInstance().options.keyJump.getDefaultKey().getCode() == key) {
 			binding = MinecraftClient.getInstance().options.keyJump;
 		}else {
 			binding = new KeyBinding("wecui.mod." + configname ,key , "key.categories.wecui");

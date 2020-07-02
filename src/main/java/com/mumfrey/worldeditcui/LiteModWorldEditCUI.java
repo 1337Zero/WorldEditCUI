@@ -23,9 +23,9 @@ import org.spongepowered.asm.mixin.Mixins;
 
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.PacketByteBuf;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.client.ClientTickCallback;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
@@ -197,9 +197,9 @@ public class LiteModWorldEditCUI implements ModInitializer, PacketConsumer,  Cli
 				if (keyBindLShift.isKeyDown() || keyBindRShift.isKeyDown()) {
 					config.setAlwaysOnTop(!config.isAlwaysOnTop());
 					if(config.isAlwaysOnTop()) {
-						MinecraftClient.getInstance().player.sendMessage(new LiteralText(config.getMessage_activated_allways_on_top()));
+						MinecraftClient.getInstance().player.sendMessage(new LiteralText(config.getMessage_activated_allways_on_top()), false);
 					}else {
-						MinecraftClient.getInstance().player.sendMessage(new LiteralText(config.getMessage_deactivated_allways_on_top()));
+						MinecraftClient.getInstance().player.sendMessage(new LiteralText(config.getMessage_deactivated_allways_on_top()),false);
 					}					
 				} else {
 					this.visible = !this.visible;
@@ -219,9 +219,9 @@ public class LiteModWorldEditCUI implements ModInitializer, PacketConsumer,  Cli
 			if (this.keyBindChunkBorder.isPressed()) {
 				this.controller.toggleChunkBorders();				
 				if(this.controller.chunkBorders) {
-					MinecraftClient.getInstance().player.sendMessage(new LiteralText(config.getMessage_activated_chunk_borders()));
+					MinecraftClient.getInstance().player.sendMessage(new LiteralText(config.getMessage_activated_chunk_borders()),false);
 				}else {
-					MinecraftClient.getInstance().player.sendMessage(new LiteralText(config.getMessage_deactivated_chunk_borders()));
+					MinecraftClient.getInstance().player.sendMessage(new LiteralText(config.getMessage_deactivated_chunk_borders()),false);
 				}
 			}
 			if(this.keyBindConfig.isPressed()) {
@@ -295,5 +295,6 @@ public class LiteModWorldEditCUI implements ModInitializer, PacketConsumer,  Cli
 			this.worldRenderListener.onRender(tickDelta,cameraX,cameraY,cameraZ);
 		}
 	}
+
 	
 }

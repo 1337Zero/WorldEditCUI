@@ -50,63 +50,64 @@ public class BlockMark  {
 	    BlockPos blockpos = new BlockPos(x,y-2,z);
 	    Box axis = new Box(blockpos);
 	    buffer.begin(3, VertexFormats.POSITION_COLOR);
-	    buffer.vertex(axis.x1, axis.y1, axis.z1).color(r, g, b, alpha).next();
-		buffer.vertex(axis.x2, axis.y1, axis.z1).color(r, g, b, alpha).next();
+	    
+	    buffer.vertex(axis.minX, axis.minY, axis.minZ).color(r, g, b, alpha).next();
+		buffer.vertex(axis.maxX, axis.minY, axis.minZ).color(r, g, b, alpha).next();
 	    tessellator.draw();
 	
 	    buffer.begin(3, VertexFormats.POSITION_COLOR);
-		buffer.vertex(axis.x1, axis.y1, axis.z1).color(r, g, b, alpha).next();
-		buffer.vertex(axis.x1, axis.y1, axis.z2).color(r, g, b, alpha).next();	
+		buffer.vertex(axis.minX, axis.minY, axis.minZ).color(r, g, b, alpha).next();
+		buffer.vertex(axis.minX, axis.minY, axis.maxZ).color(r, g, b, alpha).next();	
 	    tessellator.draw();
 	    
 	    buffer.begin(3, VertexFormats.POSITION_COLOR);
-		buffer.vertex(axis.x2, axis.y1, axis.z2).color(r, g, b, alpha).next();
-		buffer.vertex(axis.x2, axis.y1, axis.z1).color(r, g, b, alpha).next();	
+		buffer.vertex(axis.maxX, axis.minY, axis.maxZ).color(r, g, b, alpha).next();
+		buffer.vertex(axis.maxX, axis.minY, axis.minZ).color(r, g, b, alpha).next();	
 	    tessellator.draw();
 	    
 	    buffer.begin(3, VertexFormats.POSITION_COLOR);
-		buffer.vertex(axis.x2, axis.y1, axis.z2).color(r, g, b, alpha).next();
-		buffer.vertex(axis.x1, axis.y1, axis.z2).color(r, g, b, alpha).next();	
-	    tessellator.draw();
-	    	    
-	    buffer.begin(3, VertexFormats.POSITION_COLOR);
-		buffer.vertex(axis.x1, axis.y2, axis.z1).color(r, g, b, alpha).next();
-		buffer.vertex(axis.x2, axis.y2, axis.z1).color(r, g, b, alpha).next();	
-	    tessellator.draw();
-	    
-	    buffer.begin(3, VertexFormats.POSITION_COLOR);
-		buffer.vertex(axis.x1, axis.y2, axis.z1).color(r, g, b, alpha).next();
-		buffer.vertex(axis.x1, axis.y2, axis.z2).color(r, g, b, alpha).next();	
-	    tessellator.draw();
-	    
-	    buffer.begin(3, VertexFormats.POSITION_COLOR);
-		buffer.vertex(axis.x2, axis.y2, axis.z2).color(r, g, b, alpha).next();
-		buffer.vertex(axis.x2, axis.y2, axis.z1).color(r, g, b, alpha).next();	
-	    tessellator.draw();
-	    
-	    buffer.begin(3, VertexFormats.POSITION_COLOR);
-		buffer.vertex(axis.x2, axis.y2, axis.z2).color(r, g, b, alpha).next();
-		buffer.vertex(axis.x1, axis.y2, axis.z2).color(r, g, b, alpha).next();	
+		buffer.vertex(axis.maxX, axis.minY, axis.maxZ).color(r, g, b, alpha).next();
+		buffer.vertex(axis.minX, axis.minY, axis.maxZ).color(r, g, b, alpha).next();	
 	    tessellator.draw();
 	    	    
 	    buffer.begin(3, VertexFormats.POSITION_COLOR);
-		buffer.vertex(axis.x1, axis.y2, axis.z1).color(r, g, b, alpha).next();
-		buffer.vertex(axis.x1, axis.y1, axis.z1).color(r, g, b, alpha).next();
+		buffer.vertex(axis.minX, axis.maxY, axis.minZ).color(r, g, b, alpha).next();
+		buffer.vertex(axis.maxX, axis.maxY, axis.minZ).color(r, g, b, alpha).next();	
 	    tessellator.draw();
 	    
 	    buffer.begin(3, VertexFormats.POSITION_COLOR);
-		buffer.vertex(axis.x2, axis.y2, axis.z2).color(r, g, b, alpha).next();
-		buffer.vertex(axis.x2, axis.y1, axis.z2).color(r, g, b, alpha).next();
+		buffer.vertex(axis.minX, axis.maxY, axis.minZ).color(r, g, b, alpha).next();
+		buffer.vertex(axis.minX, axis.maxY, axis.maxZ).color(r, g, b, alpha).next();	
+	    tessellator.draw();
+	    
+	    buffer.begin(3, VertexFormats.POSITION_COLOR);
+		buffer.vertex(axis.maxX, axis.maxY, axis.maxZ).color(r, g, b, alpha).next();
+		buffer.vertex(axis.maxX, axis.maxY, axis.minZ).color(r, g, b, alpha).next();	
+	    tessellator.draw();
+	    
+	    buffer.begin(3, VertexFormats.POSITION_COLOR);
+		buffer.vertex(axis.maxX, axis.maxY, axis.maxZ).color(r, g, b, alpha).next();
+		buffer.vertex(axis.minX, axis.maxY, axis.maxZ).color(r, g, b, alpha).next();	
+	    tessellator.draw();
+	    	    
+	    buffer.begin(3, VertexFormats.POSITION_COLOR);
+		buffer.vertex(axis.minX, axis.maxY, axis.minZ).color(r, g, b, alpha).next();
+		buffer.vertex(axis.minX, axis.minY, axis.minZ).color(r, g, b, alpha).next();
+	    tessellator.draw();
+	    
+	    buffer.begin(3, VertexFormats.POSITION_COLOR);
+		buffer.vertex(axis.maxX, axis.maxY, axis.maxZ).color(r, g, b, alpha).next();
+		buffer.vertex(axis.maxX, axis.minY, axis.maxZ).color(r, g, b, alpha).next();
 	    tessellator.draw();	
 	    
 	    buffer.begin(3, VertexFormats.POSITION_COLOR);
-		buffer.vertex(axis.x2, axis.y2, axis.z1).color(r, g, b, alpha).next();
-		buffer.vertex(axis.x2, axis.y1, axis.z1).color(r, g, b, alpha).next();
+		buffer.vertex(axis.maxX, axis.maxY, axis.minZ).color(r, g, b, alpha).next();
+		buffer.vertex(axis.maxX, axis.minY, axis.minZ).color(r, g, b, alpha).next();
 	    tessellator.draw();	
 	    
 	    buffer.begin(3, VertexFormats.POSITION_COLOR);
-		buffer.vertex(axis.x1, axis.y2, axis.z2).color(r, g, b, alpha).next();
-		buffer.vertex(axis.x1, axis.y1, axis.z2).color(r, g, b, alpha).next();
+		buffer.vertex(axis.minX, axis.maxY, axis.maxZ).color(r, g, b, alpha).next();
+		buffer.vertex(axis.minX, axis.minY, axis.maxZ).color(r, g, b, alpha).next();
 	    tessellator.draw();	
 	    
 	    RenderHelper.normalizeRenderer();		

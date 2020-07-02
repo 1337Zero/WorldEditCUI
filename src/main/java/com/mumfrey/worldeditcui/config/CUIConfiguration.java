@@ -96,6 +96,8 @@ public final class CUIConfiguration implements InitialisationFactory {
 	@Expose
 	private String message_gui_ok = "OK";
 	@Expose
+	private String message_gui_cancel = "Cancel";
+	@Expose
 	private String message_colour_cuboidedge = "Cuboid Grid Colour";
 	@Expose
 	private String message_colour_cuboidgrid = "Cuboid Edge Colour";
@@ -464,5 +466,13 @@ public final class CUIConfiguration implements InitialisationFactory {
 
 	public String getMessage_deactivated_chunk_borders() {
 		return message_deactivated_chunk_borders;
+	}
+
+	public String getMessage_gui_cancel() {
+		return message_gui_cancel;
+	}
+
+	public void setMessage_gui_cancel(String message_gui_cancel) {
+		this.message_gui_cancel = message_gui_cancel;
 	}
 }

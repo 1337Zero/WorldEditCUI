@@ -5,6 +5,7 @@ import com.mumfrey.worldeditcui.render.ConfiguredColour;
 import com.mumfrey.worldeditcui.render.RenderHelper;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.math.MatrixStack;
 
 /**
  * Colour picker button control, spawns a style picker when clicked
@@ -51,7 +52,7 @@ public class GuiColourButton extends GuiControl {
 	
 	
 	@Override
-	public void renderButton(int mouseX, int mouseY, float partialTicks) {
+	public void renderButton(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
 		MinecraftClient minecraft = MinecraftClient.getInstance();
 		if (this.visible) {
 			boolean mouseOver = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width&& mouseY < this.y + this.height;
@@ -62,15 +63,16 @@ public class GuiColourButton extends GuiControl {
 			GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			this.drawTexturedModalRect(this.x + 1, this.y + 1, this.x + this.width - 1, this.y + this.height - 1, 0, 0,1024, v);
 			RenderHelper.drawRect(this.x + 1, this.y + 1, this.x + this.width - 1, this.y + this.height - 1, this.colour);
-			if (this.getMessage() != null && this.getMessage().length() > 0) {
-				this.drawString(minecraft.textRenderer, this.getMessage(), this.x + this.width + 8,this.y + (this.height - 8) / 2, 0xFFFFFFFF);
+			if (this.getMessage() != null && this.getMessage().asString().length() > 0) {
+				this.drawStringWithShadow(matrix, minecraft.textRenderer, this.getMessage().asString(), this.x + this.width + 8,this.y + (this.height - 8) / 2, 0xFFFFFFFF);
+				//this.drawString(minecraft.textRenderer, this.getMessage().asString(), this.x + this.width + 8,this.y + (this.height - 8) / 2, 0xFFFFFFFF);
 			}
 		}
 	}
 
-	public void drawPicker(MinecraftClient minecraft, int mouseX, int mouseY, float partialTicks) {		
+	public void drawPicker(MatrixStack stack, MinecraftClient minecraft, int mouseX, int mouseY, float partialTicks) {		
 		if (this.visible && this.picker != null) {
-			this.picker.render(mouseX, mouseY, partialTicks);
+			this.picker.render(stack, mouseX, mouseY, partialTicks);
 			//this.picker.drawButton(minecraft, mouseX, mouseY, partialTicks);
 
 			if (this.picker.getDialogResult() == DialogResult.OK) {

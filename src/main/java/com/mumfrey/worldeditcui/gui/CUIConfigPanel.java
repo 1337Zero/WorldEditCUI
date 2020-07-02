@@ -12,6 +12,8 @@ import net.minecraft.client.gui.widget.AbstractPressableButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.CheckboxWidget;
 import net.minecraft.client.util.NarratorManager;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.LiteralText;
 
 import com.mumfrey.worldeditcui.LiteModWorldEditCUI;
 import com.mumfrey.worldeditcui.config.CUIConfiguration;
@@ -62,7 +64,7 @@ public class CUIConfigPanel extends Screen{
 			GuiColourButton guicb = new GuiColourButton(this.mc, nextId, 24,CUIConfigPanel.CONTROL_TOP + nextId * CUIConfigPanel.CONTROL_SPACING, 40, 20, colour);
 			this.controlList.add(guicb);
 
-			this.controlList.add(new ButtonWidget(234,CUIConfigPanel.CONTROL_TOP + nextId * CUIConfigPanel.CONTROL_SPACING, 60, 20, "Reset",
+			this.controlList.add(new ButtonWidget(234,CUIConfigPanel.CONTROL_TOP + nextId * CUIConfigPanel.CONTROL_SPACING, 60, 20, new LiteralText("Reset"),
 					(onpress)->{
 						colour.setColour(colour.getDefault());
 						guicb.updateColour(colour);
@@ -72,12 +74,12 @@ public class CUIConfigPanel extends Screen{
 		}	
 		
 		this.colourButtonsBottom = CUIConfigPanel.CONTROL_TOP + nextId * CUIConfigPanel.CONTROL_SPACING + CUIConfigPanel.EXTRA_CONTROLS_SPACING;
-		this.chkPromiscuous = new CheckboxWidget( 24, 26, 150, 20, config.getMessage_gui_options_compat_spammy(), config.isPromiscuous());
+		this.chkPromiscuous = new CheckboxWidget( 24, 26, 150, 20, new LiteralText(config.getMessage_gui_options_compat_spammy()), config.isPromiscuous());
 		this.addButton(this.chkPromiscuous);
 		
-		this.chkAlwaysOnTop = new CheckboxWidget( 24, 80, 150, 20, config.getMessage_gui_options_compat_ontop(),config.isAlwaysOnTop());
+		this.chkAlwaysOnTop = new CheckboxWidget( 24, 80, 150, 20, new LiteralText(config.getMessage_gui_options_compat_ontop()),config.isAlwaysOnTop());
 		this.addButton(this.chkAlwaysOnTop);
-		this.chkClearAll = new CheckboxWidget(24,this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING,150, 20, config.getMessage_gui_options_extra_clearall(), config.isClearAllOnKey());
+		this.chkClearAll = new CheckboxWidget(24,this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING,150, 20, new LiteralText(config.getMessage_gui_options_extra_clearall()), config.isClearAllOnKey());
 		this.addButton(this.chkClearAll);
 
 		controlList.add(new GuiChooseKeyButton(24, 24, this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+50, 150, 20, "Hotkey: Chunk", config.getKey_chunk(), "".split(";"),"chunk"));
@@ -95,7 +97,7 @@ public class CUIConfigPanel extends Screen{
 				
 		
 		//add save button
-		this.addButton(new ButtonWidget(150, this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+170, 40,20, "save", (e)-> {			
+		this.addButton(new ButtonWidget(150, this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+170, 40,20, new LiteralText("save"), (e)-> {			
 			for (AbstractPressableButtonWidget control : this.controlList) {
 				if(control instanceof GuiColourButton) {
 					GuiColourButton colourButton = (GuiColourButton)control;
@@ -111,7 +113,7 @@ public class CUIConfigPanel extends Screen{
 			MinecraftClient.getInstance().openScreen(null);
 		}));
 		//add cancel button
-		this.addButton(new ButtonWidget(200, this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+170, 40,20, "cancel", (e)-> {
+		this.addButton(new ButtonWidget(200, this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+170, 40,20, new LiteralText("cancel"), (e)-> {
 			MinecraftClient.getInstance().openScreen(null);
 		}));
 		
@@ -119,19 +121,20 @@ public class CUIConfigPanel extends Screen{
 	}
 	
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks) {
+	public void render(MatrixStack stack ,int mouseX, int mouseY, float partialTicks) {
 		//this.renderBackground(200);
-		this.renderDirtBackground(255);
-		this.drawString(this.mc.textRenderer, LiteModWorldEditCUI.instance.getController().getConfiguration().getMessage_gui_options_compat_title(), 10,CUIConfigPanel.CONTROLS_PADDING+(int)offset, 0xFFFFFF55);
-		this.drawString(this.mc.textRenderer, LiteModWorldEditCUI.instance.getController().getConfiguration().getMessage_gui_options_colours_title(), 10, 64+(int)offset, 0xFFFFFF55);
-		this.drawString(this.mc.textRenderer, LiteModWorldEditCUI.instance.getController().getConfiguration().getMessage_gui_options_extra_title(), 10, this.colourButtonsBottom+(int)offset,0xFFFFFF55);
-		this.drawString(this.mc.textRenderer, LiteModWorldEditCUI.instance.getController().getConfiguration().getMessage_gui_options_extra_key_select(), 10,  this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+30+(int)offset,0xFFFFFF55);
-		this.drawString(this.mc.textRenderer, LiteModWorldEditCUI.instance.getController().getConfiguration().getMessage_gui_options_save_reminder(), 100,  this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+150+(int)offset,0xFFFFFF55);
+		//this.renderDirtBackground(255);
+		this.renderBackgroundTexture(200);
+		this.drawStringWithShadow(stack, this.mc.textRenderer, LiteModWorldEditCUI.instance.getController().getConfiguration().getMessage_gui_options_compat_title(), 10,CUIConfigPanel.CONTROLS_PADDING+(int)offset, 0xFFFFFF55);
+		this.drawStringWithShadow(stack, this.mc.textRenderer, LiteModWorldEditCUI.instance.getController().getConfiguration().getMessage_gui_options_colours_title(), 10, 64+(int)offset, 0xFFFFFF55);
+		this.drawStringWithShadow(stack, this.mc.textRenderer, LiteModWorldEditCUI.instance.getController().getConfiguration().getMessage_gui_options_extra_title(), 10, this.colourButtonsBottom+(int)offset,0xFFFFFF55);
+		this.drawStringWithShadow(stack, this.mc.textRenderer, LiteModWorldEditCUI.instance.getController().getConfiguration().getMessage_gui_options_extra_key_select(), 10,  this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+30+(int)offset,0xFFFFFF55);
+		this.drawStringWithShadow(stack, this.mc.textRenderer, LiteModWorldEditCUI.instance.getController().getConfiguration().getMessage_gui_options_save_reminder(), 100,  this.colourButtonsBottom + CUIConfigPanel.EXTRA_CONTROLS_SPACING+150+(int)offset,0xFFFFFF55);
 		
 		for(AbstractButtonWidget button : this.buttons) {
 			int tempButtonY = button.y;
 			button.y += offset;
-			button.render(mouseX, mouseY, partialTicks);
+			button.render(stack, mouseX, mouseY, partialTicks);
 			button.y = tempButtonY;
 		}
 		
@@ -141,7 +144,7 @@ public class CUIConfigPanel extends Screen{
 			if(button instanceof GuiColourButton) {
 				//int tempButtonY = button.y;
 				//button.y -= offset;
-				((GuiColourButton)button).drawPicker(mc, mouseX, mouseY, partialTicks);
+				((GuiColourButton)button).drawPicker(stack, mc, mouseX, mouseY, partialTicks);
 				//button.y = tempButtonY;
 			}
 		}

@@ -81,9 +81,10 @@ public class RenderHelper {
 		BufferBuilder bufferbuilder = tessellator.getBuffer();
 		GlStateManager.enableBlend();
 		GlStateManager.disableTexture();
-		GlStateManager.blendFuncSeparate(GlStateManager.SrcFactor.SRC_ALPHA.value,
-				GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA.value, GlStateManager.SrcFactor.ONE.value,
-				GlStateManager.DstFactor.ZERO.value);
+		//GlStateManager.SrcFactor.SRC_ALPHA.
+		GlStateManager.blendFuncSeparate(GlStateManager.SrcFactor.SRC_ALPHA.field_22545,
+				GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA.field_22528, GlStateManager.SrcFactor.ONE.field_22545,
+				GlStateManager.DstFactor.ZERO.field_22528);
 		GlStateManager.color4f(f, f1, f2, f3);
 		bufferbuilder.begin(7, VertexFormats.POSITION);
 		bufferbuilder.vertex((double) left, (double) bottom, 0.0D);
@@ -116,9 +117,9 @@ public class RenderHelper {
 		GlStateManager.disableTexture();
 		GlStateManager.enableBlend();
 		GlStateManager.disableAlphaTest();
-		GlStateManager.blendFuncSeparate(GlStateManager.SrcFactor.SRC_ALPHA.value,
-				GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA.value, GlStateManager.SrcFactor.ONE.value,
-				GlStateManager.DstFactor.ZERO.value);
+		GlStateManager.blendFuncSeparate(GlStateManager.SrcFactor.SRC_ALPHA.field_22545,
+				GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA.field_22528, GlStateManager.SrcFactor.ONE.field_22545,
+				GlStateManager.DstFactor.ZERO.field_22528);
 		GlStateManager.shadeModel(7425);
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bufferbuilder = tessellator.getBuffer();

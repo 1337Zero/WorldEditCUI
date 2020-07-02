@@ -11,6 +11,8 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.LiteralText;
 
 
 /**
@@ -107,9 +109,9 @@ public class GuiControl extends ButtonWidget {
 	 * @param mouseY    Mouse Y coordinate
 	 */
 	@Override
-	public final void render(int mouseX, int mouseY, float partialTicks) {
+	public final void render(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
 		
-		this.renderButton(mouseX, mouseY, partialTicks);		
+		this.renderButton(stack, mouseX, mouseY, partialTicks);		
 	}
 
 	
@@ -121,9 +123,9 @@ public class GuiControl extends ButtonWidget {
 	 * @param mouseX    Mouse X coordinate
 	 * @param mouseY    Mouse Y coordinate
 	 */
-	protected void drawControl(int mouseX, int mouseY, float partialTicks) {
+	protected void drawControl(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
 
-		super.render(mouseX, mouseY, partialTicks);
+		super.render(stack, mouseX, mouseY, partialTicks);
 	}
 
 	/**
@@ -138,7 +140,7 @@ public class GuiControl extends ButtonWidget {
 	 * @param displayText   Control display text
 	 */
 	public GuiControl(MinecraftClient minecraft, int controlId, int xPos, int yPos, int controlWidth, int controlHeight,String displayText,PressAction onpress) {
-		super( xPos, yPos, controlWidth, controlHeight ,displayText,onpress);
+		super( xPos, yPos, controlWidth, controlHeight ,new LiteralText(displayText),onpress);
 		//super(controlId, xPos, yPos, controlWidth, controlHeight, displayText);
 		this.mc = minecraft;
 		this.zLevel = 0;
@@ -207,7 +209,7 @@ public class GuiControl extends ButtonWidget {
 		//glEnableBlend();
 		GlStateManager.disableTexture();
 		//glDisableTexture2D();
-		GlStateManager.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA.value, GlStateManager.SrcFactor.ONE_MINUS_SRC_ALPHA.value);
+		GlStateManager.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA.field_22545, GlStateManager.SrcFactor.ONE_MINUS_SRC_ALPHA.field_22545);
 		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		GlStateManager.color4f(f1, f2, f3, f);
 		//glColor4f(f1, f2, f3, f);
@@ -285,7 +287,7 @@ public class GuiControl extends ButtonWidget {
 		//glEnableBlend();
 		GlStateManager.disableTexture();
 		//glDisableTexture2D();
-		GlStateManager.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA.value, GlStateManager.SrcFactor.ONE_MINUS_SRC_ALPHA.value);
+		GlStateManager.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA.field_22545, GlStateManager.SrcFactor.ONE_MINUS_SRC_ALPHA.field_22545);
 		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		GlStateManager.color4f(f1, f2, f3, f);
 		//glColor4f(f1, f2, f3, f);
@@ -512,19 +514,19 @@ public class GuiControl extends ButtonWidget {
 	 * @param width
 	 * @param colour
 	 */
-	public static void drawStringWithEllipsis(TextRenderer fontrenderer, String s, int x, int y, int width,
+	public static void drawStringWithEllipsis(MatrixStack stack, TextRenderer fontrenderer, String s, int x, int y, int width,
 			int colour) {
-		if (fontrenderer.getStringWidth(s) <= width) {
-			fontrenderer.drawWithShadow(s, x, y, colour); // func_175063_a drawStringWithShadow
+		if (fontrenderer.getWidth(s) <= width) {
+			fontrenderer.drawWithShadow(stack, s, x, y, colour); // func_175063_a drawStringWithShadow
 		} else if (width < 8) {
-			fontrenderer.drawWithShadow("..", x, y, colour); // func_175063_a drawStringWithShadow
+			fontrenderer.drawWithShadow(stack, "..", x, y, colour); // func_175063_a drawStringWithShadow
 		} else {
 			String trimmedText = s;
 
-			while (fontrenderer.getStringWidth(trimmedText) > width - 8 && trimmedText.length() > 0)
+			while (fontrenderer.getWidth(trimmedText) > width - 8 && trimmedText.length() > 0)
 				trimmedText = trimmedText.substring(0, trimmedText.length() - 1);
 
-			fontrenderer.drawWithShadow(trimmedText + "...", x, y, colour); // func_175063_a drawStringWithShadow
+			fontrenderer.drawWithShadow(stack, trimmedText + "...", x, y, colour); // func_175063_a drawStringWithShadow
 		}
 	}
 
@@ -541,7 +543,7 @@ public class GuiControl extends ButtonWidget {
 		GlStateManager.lineWidth(GuiControl.guiScaleFactor * width);
 		//glLineWidth(GuiControl.guiScaleFactor * width);
 		
-		GlStateManager.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA.value, GlStateManager.SrcFactor.ONE_MINUS_SRC_ALPHA.value);
+		GlStateManager.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA.field_22545, GlStateManager.SrcFactor.ONE_MINUS_SRC_ALPHA.field_22545);
 		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		//glEnableBlend();
 		GlStateManager.enableBlend();
@@ -583,7 +585,7 @@ public class GuiControl extends ButtonWidget {
 		//glEnableTexture2D();
 	}
 
-	protected void drawRotText(TextRenderer fontRenderer, String text, int xPosition, int yPosition, int colour,
+	protected void drawRotText(MatrixStack stack, TextRenderer fontRenderer, String text, int xPosition, int yPosition, int colour,
 			boolean colourOrOp) {
 		if (colourOrOp) {
 			GlStateManager.enableColorLogicOp();
@@ -591,7 +593,7 @@ public class GuiControl extends ButtonWidget {
 			//glLogicOp(GL_OR_REVERSE);
 		}
 
-		int textWidth = fontRenderer.getStringWidth(text) / 2;
+		int textWidth = fontRenderer.getWidth(text) / 2;
 
 		GlStateManager.pushMatrix();
 		//glPushMatrix();
@@ -602,7 +604,7 @@ public class GuiControl extends ButtonWidget {
 		GlStateManager.translatef(-textWidth, -4, 0);
 		//glTranslatef(-textWidth, -4, 0);
 
-		fontRenderer.draw(text, 0, 0, colour);
+		fontRenderer.draw(stack, text, 0, 0, colour);
 
 		GlStateManager.popMatrix();
 		//glPopMatrix();
@@ -628,12 +630,12 @@ public class GuiControl extends ButtonWidget {
 	 * @param colour
 	 * @param backgroundColour
 	 */
-	protected void drawTooltip(TextRenderer fontRenderer, String tooltipText, int mouseX, int mouseY, int screenWidth,int screenHeight, int colour, int backgroundColour) {
-		int textSize = fontRenderer.getStringWidth(tooltipText);
+	protected void drawTooltip(MatrixStack stack, TextRenderer fontRenderer, String tooltipText, int mouseX, int mouseY, int screenWidth,int screenHeight, int colour, int backgroundColour) {
+		int textSize = fontRenderer.getWidth(tooltipText);
 		mouseX = Math.max(0, Math.min(screenWidth - textSize - 6, mouseX - 6));
 		mouseY = Math.max(0, Math.min(screenHeight - 16, mouseY - 18));
 		RenderHelper.drawRect(mouseX, mouseY, mouseX + textSize + 6, mouseY + 16, backgroundColour);
-		this.drawString(fontRenderer, tooltipText, mouseX + 3, mouseY + 4, colour);
+		this.drawStringWithShadow(stack, fontRenderer, tooltipText, mouseX + 3, mouseY + 4, colour);
 	}
 
 	/**

@@ -7,10 +7,14 @@ import net.minecraft.client.gui.screen.Screen;
 
 public class ConfigScreen implements ConfigScreenFactory<Screen>{
 
+	public static Screen instance;
+	
 	@Override
 	public Screen create(Screen parent) {
-		System.out.println("new CUIConfigPanel");
-		return new CUIConfigPanel();
+		if(instance == null) {
+			instance = new CUIConfigPanel();
+		}
+		return instance;
 	}
 
 

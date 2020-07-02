@@ -6,6 +6,9 @@ import com.mumfrey.worldeditcui.LiteModWorldEditCUI;
 import com.mumfrey.worldeditcui.config.CUIConfiguration;
 
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.Text;
+import net.minecraft.text.LiteralText;
 
 
 
@@ -22,7 +25,7 @@ public class GuiChooseKeyButton extends ButtonWidget{
 	
 	public GuiChooseKeyButton(int id, int x, int y, int width, int height,String label, int buttonkey,String[] overlayText,String configName){
 		//super(id, x, y, width, height, label, overlayText);		
-		super(x,y,width,height,label,(onpress)->{});
+		super(x,y,width,height,Text.method_30163(label),(onpress)->{});
 		this.buttonkey = buttonkey;
 		this.xstart = x;
 		this.ystart = y;
@@ -41,21 +44,22 @@ public class GuiChooseKeyButton extends ButtonWidget{
 		return name;
 	}
 
+	
 	@Override
-	public void render(int x, int y, float partialTicks) {
+	public void render(MatrixStack matrices,int x, int y, float partialTicks) {
 		
-		super.render(x, y, partialTicks);		
+		super.render(matrices,x, y, partialTicks);		
 		if(waiting){
-			this.setMessage(buttonname + " waiting...");
+			this.setMessage(new LiteralText(buttonname + " waiting..."));
 		}else{
-			this.setMessage(buttonname + ": " + makeBetterReadable(buttonkey));
+			this.setMessage(new LiteralText(buttonname + ": " + makeBetterReadable(buttonkey)));
 		}
 	}
 	@Override
 	public boolean mouseClicked(double x, double y, int p_mouseClicked_5_) {
 		if(super.mouseClicked(x, y, p_mouseClicked_5_)) {
 			 waiting = true;
-			 this.setMessage("waiting...");
+			 this.setMessage(new LiteralText("waiting..."));
 			 onPress.onPress(this);
 			 return true;
 		}	 
@@ -96,7 +100,7 @@ public class GuiChooseKeyButton extends ButtonWidget{
 		if(!waiting)return false;
 		this.waiting = false;
 		this.buttonkey = keyCode;
-		this.setMessage(buttonname + ": " + makeBetterReadable(buttonkey));		
+		this.setMessage(new LiteralText(buttonname + ": " + makeBetterReadable(buttonkey)));		
 		CUIConfiguration config = LiteModWorldEditCUI.instance.getController().getConfiguration();
 				
 		if(configName.equalsIgnoreCase("chunk")) {
